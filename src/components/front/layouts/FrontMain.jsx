@@ -6,7 +6,7 @@ import Footer from './Footer';
 
 
 
-const Main = () => {
+const FrontMain = () => {
 
 
     return (
@@ -20,4 +20,4 @@ const Main = () => {
 
 
 
-export default Main;
+export default FrontMain;

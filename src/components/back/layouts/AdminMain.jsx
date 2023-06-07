@@ -6,7 +6,7 @@ import Footer from './Sideber';
 
 
 
-const Main = () => {
+const AdminMain = () => {
 
 
     return (
@@ -21,4 +21,4 @@ const Main = () => {
 
 
 
-export default Main;
+export default AdminMain;

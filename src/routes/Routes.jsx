@@ -1,15 +1,16 @@
 import { createBrowserRouter } from 'react-router-dom'
 import Dashboard from '../components/back/pages/dashboard/Dashboard'
-import Main from '../components/front/layouts/Main'
 import Home from '../components/front/pages/Home'
 import Login from '../components/front/pages/Login'
 import Register from '../components/front/pages/Register'
+import FrontMain from '../components/front/layouts/FrontMain'
+import AdminMain from '../components/back/layouts/AdminMain'
 
 
 export const router = createBrowserRouter([
     {
         path: '/',
-        element: <Main></Main>,
+        element: <FrontMain></FrontMain>,
         children: [
             {
                 path: '/',
@@ -34,11 +35,11 @@ export const router = createBrowserRouter([
 
 
     {
-        path: '/admin',
-        element: <Main></Main>,
+        path: '/dashboard',
+        element: <AdminMain></AdminMain>,
         children: [
             {
-                path: '/admin/dashboard',
+                path: '/dashboard',
                 element: <Dashboard></Dashboard>,
             },
         ]

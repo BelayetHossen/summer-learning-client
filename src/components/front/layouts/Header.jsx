@@ -5,13 +5,23 @@ import {
     Button,
     IconButton,
     Avatar,
-    Tooltip,
+    MenuItem,
+    MenuList,
+    Menu,
+    MenuHandler,
 } from "@material-tailwind/react";
-
-import { useEffect, useState } from "react";
+import {
+    ChevronDownIcon,
+    LifebuoyIcon,
+    PowerIcon,
+} from "@heroicons/react/24/outline";
+import { createElement, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../providers/AuthProvider";
+import { ToastContainer } from "react-toastify";
 
 const Header = () => {
+    const { auth, user, logOut } = useContext(AuthContext);
     const [openNav, setOpenNav] = useState(false);
     useEffect(() => {
         window.addEventListener(
@@ -62,9 +72,24 @@ const Header = () => {
             </Typography>
         </ul>
     );
+    const handleLogout = () => {
+        logOut()
+            .then((result) => {
+                console.log(result);
+            })
+            .catch((error) => console.error(error));
+    };
+
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    // const location = useLocation();
+    // const pathName = location.pathname;
+
 
     return (
         <>
+            <ToastContainer />
             <Navbar className="sticky inset-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4">
                 <div className="flex items-center justify-between text-blue-gray-900 mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                     <Typography
@@ -77,25 +102,95 @@ const Header = () => {
                     <div className="">
                         <div className="flex items-center gap-4">
                             <div className="mr-4 hidden lg:block">{navList}</div>
-                            <Link to={'/login'}><Button
-                                variant="gradient"
-                                size="sm"
-                                className="hidden lg:inline-block"
-                            >
-                                <span>Login</span>
-                            </Button></Link>
+                            {user ? (
 
-                            <Tooltip content="Material Tailwind" placement="bottom">
-                                <div className="flex items-center gap-4">
-                                    <Avatar src="https://i.ibb.co/3fz2rYg/m2.jpg" alt="avatar" variant="rounded" />
-                                    <div>
-                                        <Typography variant="h6">Candice Wu</Typography>
-                                        <Typography variant="small" color="gray" className="font-normal">Web Developer</Typography>
-                                    </div>
+                                <><Menu open={isMenuOpen} handler={setIsMenuOpen} placement="bottom-end">
+                                    <MenuHandler>
+                                        <Button
+                                            variant="text"
+                                            color="blue-gray"
+                                            className="flex items-center gap-1 rounded-full py-0.5 pr-2 pl-0.5 lg:ml-auto"
+                                        >
+                                            <Avatar
+                                                variant="circular"
+                                                size="sm"
+                                                alt="candice wu"
+                                                className="border border-blue-500 p-0.5"
+                                                src={auth?.currentUser?.photoURL}
+                                            />
+                                            <ChevronDownIcon
+                                                strokeWidth={2.5}
+                                                className={`h-3 w-3 transition-transform ${isMenuOpen ? "rotate-180" : ""
+                                                    }`}
+                                            />
+                                        </Button>
+                                    </MenuHandler>
+                                    <MenuList className="p-1">
+                                        <span className="ml-4 py-5 mt-2"></span>
+                                        <MenuItem
+                                            className="flex items-center gap-2 rounded hover:bg-purple-500/10 focus:bg-purple-500/10 active:bg-purple-500/10"
+                                        >
+
+                                            <Typography
+                                                as="span"
+                                                variant="small"
+                                                className="font-normal"
+                                                color="purple"
+                                            >
+                                                {user?.displayName}
+                                            </Typography>
+                                        </MenuItem>
+                                        <Link to={'/dashboard'}>
+                                            <MenuItem
+                                                className="flex items-center gap-2 rounded hover:bg-purple-500/10 focus:bg-purple-500/10 active:bg-purple-500/10"
+                                            >
+                                                {createElement(LifebuoyIcon, {
+                                                    className: "h-4 w-4 isLastItem text-red-500",
+                                                    strokeWidth: 2,
+                                                })}
+                                                <Typography
+                                                    as="span"
+                                                    variant="small"
+                                                    className="font-normal"
+                                                    color="purple"
+                                                >
+                                                    Dashboard
+                                                </Typography>
+                                            </MenuItem>
+                                        </Link>
+
+                                        <MenuItem
+                                            onClick={handleLogout}
+                                            className="flex items-center gap-2 rounded hover:bg-purple-500/10 focus:bg-purple-500/10 active:bg-purple-500/10"
+                                        >
+                                            {createElement(PowerIcon, {
+                                                className: "h-4 w-4 isLastItem text-red-500",
+                                                strokeWidth: 2,
+                                            })}
+                                            <Typography
+                                                as="span"
+                                                variant="small"
+                                                className="font-normal"
+                                                color="purple"
+                                            >
+                                                Sign Out
+                                            </Typography>
+                                        </MenuItem>
+                                    </MenuList>
+                                </Menu></>
+                            ) : (
+                                <Link to={'/login'}>
+                                    <Button
+                                        variant="gradient"
+                                        size="sm"
+                                        className="from-purple-600"
+                                    >
+                                        <span>Login</span>
+                                    </Button>
+                                </Link>
+                            )}
 
 
-                                </div>
-                            </Tooltip>
 
                             <IconButton
                                 variant="text"
