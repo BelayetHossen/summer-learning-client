@@ -9,6 +9,7 @@ import {
 } from "@material-tailwind/react";
 
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const Header = () => {
     const [openNav, setOpenNav] = useState(false);
@@ -27,9 +28,7 @@ const Header = () => {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
-                    Pages
-                </a>
+                <Link to={'/'}>Home</Link>
             </Typography>
             <Typography
                 as="li"
@@ -78,13 +77,14 @@ const Header = () => {
                     <div className="">
                         <div className="flex items-center gap-4">
                             <div className="mr-4 hidden lg:block">{navList}</div>
-                            <Button
+                            <Link to={'/login'}><Button
                                 variant="gradient"
                                 size="sm"
                                 className="hidden lg:inline-block"
                             >
-                                <span>Buy Now</span>
-                            </Button>
+                                <span>Login</span>
+                            </Button></Link>
+
                             <Tooltip content="Material Tailwind" placement="bottom">
                                 <div className="flex items-center gap-4">
                                     <Avatar src="https://i.ibb.co/3fz2rYg/m2.jpg" alt="avatar" variant="rounded" />
