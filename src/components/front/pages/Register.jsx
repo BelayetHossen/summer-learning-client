@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../../providers/AuthProvider";
+import { addUser } from "../../../api/User";
 
 
 const Register = () => {
@@ -18,6 +19,14 @@ const Register = () => {
     const submitRegister = () => {
         setSpinning(true)
         const { name, email, password, photo } = getValues();
+        const userData = {
+            displayName: name,
+            email,
+            password,
+            photoUrl: photo,
+            role: "Student"
+        }
+
         createUser(email, password)
             .then((result) => {
                 const registeredUser = result.user;
@@ -30,15 +39,23 @@ const Register = () => {
                 console.log(error);
                 setSpinning(false)
             });
+
+        addUser(userData)
+            .then(data => {
+                toast.warning(data.message);
+            })
+            .catch(err => console.log(err))
     };
 
     const update = (registeredUser, name, photo) => {
         userNamePhoto(registeredUser, name, photo)
             .then(() => {
                 toast.success("You have successfully registered!");
+                setSpinning(false)
             })
             .catch((error) => {
                 console.log(error);
+                setSpinning(false)
             });
     };
     return (
