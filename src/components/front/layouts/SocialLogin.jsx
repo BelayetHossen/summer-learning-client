@@ -19,7 +19,10 @@ const SocialLogin = () => {
                     displayName: loggedUser.displayName,
                     email: loggedUser.email,
                     photoURL: loggedUser.photoURL,
-                    role: "Student"
+                    role: "Student",
+                    phone: "",
+                    gender: "",
+                    address: ""
                 }
                 addUser(userData)
                     .then(data => {

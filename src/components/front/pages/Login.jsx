@@ -6,6 +6,7 @@ import { AuthContext } from "../../../providers/AuthProvider";
 import { useForm } from "react-hook-form";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
+import Loader from "../../Loader";
 
 
 const Login = () => {
@@ -44,7 +45,7 @@ const Login = () => {
                 <h1 className="text-3xl font-semibold text-center text-purple-700 uppercase">
                     Sign in
                 </h1>
-
+                {spinning && <Loader />}
                 {warning && (
                     <Alert
                         color="red"

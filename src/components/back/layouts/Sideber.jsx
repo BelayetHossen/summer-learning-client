@@ -24,7 +24,7 @@ const Sidebar = () => {
     return (
         <>
             {/* mobile Screen Navbar */}
-            <div className='z-10 bg-gray-100 text-gray-800 flex justify-between md:hidden'>
+            <div className='z-5 bg-gray-100 text-gray-800 flex justify-between md:hidden'>
                 <div>
                     <div className='w-full flex py-2 bg-gray-100'>
                         <img

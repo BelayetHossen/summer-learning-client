@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../../providers/AuthProvider";
 import { addUser } from "../../../api/User";
+import Loader from "../../Loader";
 
 
 const Register = () => {
@@ -19,7 +20,7 @@ const Register = () => {
     const submitRegister = (e) => {
 
         setSpinning(true)
-        const { name, email, password } = getValues();
+        const { name, email, password, phone, gender, address } = getValues();
 
 
         // Image Upload
@@ -39,7 +40,10 @@ const Register = () => {
                     displayName: name,
                     email,
                     photoURL: photoName,
-                    role: "Student"
+                    role: "Student",
+                    phone,
+                    gender,
+                    address
                 }
 
                 createUser(email, password)
@@ -87,7 +91,7 @@ const Register = () => {
                 <h1 className="text-3xl font-semibold text-center text-purple-700 uppercase">
                     Sign up
                 </h1>
-
+                {spinning && <Loader />}
 
                 <form onSubmit={handleSubmit(submitRegister)} className="text-black">
                     <div className="mb-2">
@@ -104,6 +108,7 @@ const Register = () => {
                         <input defaultValue="" {...register("email", { required: true })} aria-invalid={errors.email ? "true" : "false"} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40" type="email" />
                     </div>
                     {errors.email?.type === 'required' && <p className="text-red-400">Email field is required</p>}
+
                     <div className="mb-2">
                         <label className="block text-sm font-semibold text-gray-800">
                             Password
@@ -166,11 +171,35 @@ const Register = () => {
 
                     <div className="mb-2">
                         <label className="block text-sm font-semibold text-gray-800">
+                            Phone number <small>(Optional)</small>
+                        </label>
+                        <input defaultValue="" {...register("phone")} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40" />
+                    </div>
+                    <div className="mb-2">
+                        <label className="block text-sm font-semibold text-gray-800">
+                            Gender<small>(Optional)</small>
+                        </label>
+                        <select defaultValue="" {...register("gender")} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40">
+                            <option value="">-Select-</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+
+                    </div>
+                    <div className="mb-2">
+                        <label className="block text-sm font-semibold text-gray-800">
+                            Address<small>(Optional)</small>
+                        </label>
+                        <textarea defaultValue="" {...register("address")} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40" cols="30" rows="10"></textarea>
+                    </div>
+
+                    <div className="mb-2">
+                        <label className="block text-sm font-semibold text-gray-800">
                             Profile photo <small>jpg/png (200*200 recommanded)</small>
                         </label>
                         <input defaultValue="" {...register("photo", { required: true })} aria-invalid={errors.photo ? "true" : "false"} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40" type="file" />
                     </div>
-                    {errors.photo?.type === 'required' && <p className="text-red-400">Upload a prifile photo</p>}
+                    {errors.photo?.type === 'required' && <p className="text-red-400">Upload a profile photo</p>}
 
 
                     <div className="mt-6">
