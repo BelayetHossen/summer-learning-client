@@ -16,35 +16,58 @@ const Register = () => {
     const [spinning, setSpinning] = useState(false);
     const navigate = useNavigate();
 
-    const submitRegister = () => {
+    const submitRegister = (e) => {
+
         setSpinning(true)
-        const { name, email, password, photo } = getValues();
-        const userData = {
-            displayName: name,
-            email,
-            password,
-            photoUrl: photo,
-            role: "Student"
-        }
+        const { name, email, password } = getValues();
 
-        createUser(email, password)
-            .then((result) => {
-                const registeredUser = result.user;
-                update(registeredUser, name, photo);
-                reset()
-                navigate("/", { replace: true });
+
+        // Image Upload
+        const photo = e.photo[0]
+        const formData = new FormData()
+        formData.append('image', photo)
+
+        const url = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMGBB_SECRET_KEY}`
+        fetch(url, {
+            method: 'POST',
+            body: formData,
+        })
+            .then(res => res.json())
+            .then(imageData => {
+                const photoName = imageData.data.display_url
+                const userData = {
+                    displayName: name,
+                    email,
+                    photoURL: photoName,
+                    role: "Student"
+                }
+
+                createUser(email, password)
+                    .then((result) => {
+                        const registeredUser = result.user;
+                        update(registeredUser, name, photoName);
+                        reset()
+                        navigate("/", { replace: true });
+                        setSpinning(false)
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        setSpinning(false)
+                    });
+
+                addUser(userData)
+                    .then(data => {
+                        toast.warning(data.message);
+                        setSpinning(false)
+                    })
+                    .catch(err => console.log(err))
+            })
+            .catch(err => {
+                toast.error(err.message)
                 setSpinning(false)
             })
-            .catch((error) => {
-                console.log(error);
-                setSpinning(false)
-            });
 
-        addUser(userData)
-            .then(data => {
-                toast.warning(data.message);
-            })
-            .catch(err => console.log(err))
+
     };
 
     const update = (registeredUser, name, photo) => {
@@ -71,7 +94,7 @@ const Register = () => {
                         <label className="block text-sm font-semibold text-gray-800">
                             Name
                         </label>
-                        <input defaultValue="" {...register("name", { required: true })} aria-invalid={errors.email ? "true" : "false"} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40" />
+                        <input defaultValue="" {...register("name", { required: true })} aria-invalid={errors.name ? "true" : "false"} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40" />
                     </div>
                     {errors.name?.type === 'required' && <span className="text-red-400">Name field is required</span>}
                     <div className="mb-2">
@@ -143,11 +166,12 @@ const Register = () => {
 
                     <div className="mb-2">
                         <label className="block text-sm font-semibold text-gray-800">
-                            Photo URL
+                            Profile photo <small>jpg/png (200*200 recommanded)</small>
                         </label>
-                        <input defaultValue="" {...register("photo", { required: true })} aria-invalid={errors.email ? "true" : "false"} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40" />
+                        <input defaultValue="" {...register("photo", { required: true })} aria-invalid={errors.photo ? "true" : "false"} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40" type="file" />
                     </div>
-                    {errors.photo?.type === 'required' && <p className="text-red-400">Photo URL field is required</p>}
+                    {errors.photo?.type === 'required' && <p className="text-red-400">Upload a prifile photo</p>}
+
 
                     <div className="mt-6">
                         <Button

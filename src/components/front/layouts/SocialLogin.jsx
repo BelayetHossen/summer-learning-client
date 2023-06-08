@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import { AuthContext } from "../../../providers/AuthProvider";
 import { useLocation, useNavigate } from "react-router-dom";
+import { addUser } from "../../../api/User";
+import { toast } from "react-toastify";
 
 
 const SocialLogin = () => {
@@ -13,8 +15,19 @@ const SocialLogin = () => {
         googleSignIn()
             .then((result) => {
                 const loggedUser = result.user;
-                console.log(loggedUser);
+                const userData = {
+                    displayName: loggedUser.displayName,
+                    email: loggedUser.email,
+                    photoURL: loggedUser.photoURL,
+                    role: "Student"
+                }
+                addUser(userData)
+                    .then(data => {
+                        toast.warning(data.message);
+                    })
+                    .catch(err => console.log(err))
                 navigate(from, { replace: true });
+                toast.success("You have successfully LoggedIn!");
             })
             .catch((error) => {
                 console.log(error);
