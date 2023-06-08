@@ -1,24 +1,22 @@
-
-import { Outlet } from 'react-router-dom';
-import Header from './Header';
-import Sidebar from './Sideber';
-import Footer from './Sideber';
-
+import { Outlet } from "react-router-dom";
+import Sidebar from "./Sideber";
 
 
 const AdminMain = () => {
 
 
     return (
-        <>
-            <Header></Header>
-            <Sidebar></Sidebar>
-            <Outlet></Outlet>
-            <Footer></Footer>
-        </>
+        <div className='relative min-h-screen md:flex'>
+            <Sidebar />
+            <div className='flex-1  md:ml-64'>
+                <div className='p-5'>
+                    <Outlet />
+                </div>
+            </div>
+        </div>
     );
 };
 
-
-
 export default AdminMain;
+
+

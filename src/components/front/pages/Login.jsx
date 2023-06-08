@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SocialLogin from "../layouts/SocialLogin";
-import { Alert, Button } from "@material-tailwind/react";
+import { Alert, Button, Spinner } from "@material-tailwind/react";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../../providers/AuthProvider";
 import { useForm } from "react-hook-form";
@@ -12,6 +12,7 @@ const Login = () => {
     const { loginEmailPassword } = useContext(AuthContext);
     const [warning, setWarning] = useState("");
     const [passwordType, setPasswordType] = useState("password");
+    const [spinning, setSpinning] = useState(false);
     const { register, formState: { errors }, handleSubmit, getValues } = useForm();
 
     const navigate = useNavigate();
@@ -19,8 +20,8 @@ const Login = () => {
     const from = location.state?.from?.pathname || "/";
 
     const loginEmailPass = () => {
+        setSpinning(true)
         const { email, password } = getValues();
-
         loginEmailPassword(email, password)
             .then((result) => {
                 const loggedUser = result.user;
@@ -28,16 +29,18 @@ const Login = () => {
                 setWarning("");
                 toast.success("You have successfully Login");
                 navigate(from, { replace: true });
+                setSpinning(false)
             })
             .catch((error) => {
                 setWarning(error.message);
+                setSpinning(false)
             });
     };
 
 
     return (
-        <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
-            <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl lg:max-w-xl">
+        <div className="relative flex flex-col justify-center min-h-screen overflow-hidden py-4 bg-purple-600">
+            <div className="w-full p-6 m-auto bg-white rounded-md shadow-2xl lg:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-purple-700 uppercase">
                     Sign in
                 </h1>
@@ -79,7 +82,7 @@ const Login = () => {
                         </label>
                         <div className="flex items-center">
                             <input
-                                {...register("password", { required: "Password is required!", pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/ })}
+                                {...register("password", { required: "Password is required!" })}
                                 className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                                 type={passwordType}
 
@@ -103,7 +106,9 @@ const Login = () => {
                             className="from-purple-600 w-full py-3"
                             type="submit"
                         >
-                            <span>Login</span>
+                            {!spinning ? <span>Login</span> : <Spinner color="red" className="w-[70px] mx-auto" />}
+
+
                         </Button>
 
                     </div>

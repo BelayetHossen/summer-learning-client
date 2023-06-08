@@ -1,4 +1,4 @@
-import { Button } from "@material-tailwind/react";
+import { Button, Spinner } from "@material-tailwind/react";
 import { Link, useNavigate } from "react-router-dom";
 import SocialLogin from "../layouts/SocialLogin";
 import { toast } from "react-toastify";
@@ -8,40 +8,42 @@ import { AuthContext } from "../../../providers/AuthProvider";
 
 
 const Register = () => {
-    const { register, formState: { errors }, handleSubmit, getValues } = useForm();
+    const { register, formState: { errors }, handleSubmit, getValues, reset } = useForm();
     const { createUser, userNamePhoto } = useContext(AuthContext);
     const [passwordType, setPasswordType] = useState("password");
     const [conPasswordType, setConPasswordType] = useState("password");
+    const [spinning, setSpinning] = useState(false);
     const navigate = useNavigate();
 
     const submitRegister = () => {
+        setSpinning(true)
         const { name, email, password, photo } = getValues();
         createUser(email, password)
             .then((result) => {
                 const registeredUser = result.user;
                 update(registeredUser, name, photo);
-
-                setTimeout(function () {
-                    navigate("/", { replace: true });
-                }, 2000);
+                reset()
+                navigate("/", { replace: true });
+                setSpinning(false)
             })
             .catch((error) => {
                 console.log(error);
+                setSpinning(false)
             });
     };
 
     const update = (registeredUser, name, photo) => {
         userNamePhoto(registeredUser, name, photo)
             .then(() => {
-                toast.success("You have successfully registered! Redirecting.....");
+                toast.success("You have successfully registered!");
             })
             .catch((error) => {
                 console.log(error);
             });
     };
     return (
-        <div className="relative flex flex-col justify-center min-h-screen overflow-hidden">
-            <div className="w-full p-6 m-auto bg-white rounded-md shadow-xl lg:max-w-xl">
+        <div className="relative flex flex-col justify-center min-h-screen overflow-hidden py-4 bg-purple-600">
+            <div className="w-full p-6 m-auto bg-white rounded-md shadow-2xl lg:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-purple-700 uppercase">
                     Sign up
                 </h1>
@@ -137,7 +139,7 @@ const Register = () => {
                             className="from-purple-600 w-full py-3"
                             type="submit"
                         >
-                            <span>Register</span>
+                            {!spinning ? <span>Register</span> : <Spinner color="red" className="w-[70px] mx-auto" />}
                         </Button>
 
                     </div>

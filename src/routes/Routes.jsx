@@ -5,6 +5,8 @@ import Login from '../components/front/pages/Login'
 import Register from '../components/front/pages/Register'
 import FrontMain from '../components/front/layouts/FrontMain'
 import AdminMain from '../components/back/layouts/AdminMain'
+import Users from '../components/back/pages/admins/Users'
+import Classes from '../components/back/pages/admins/Classes'
 
 
 export const router = createBrowserRouter([
@@ -41,6 +43,14 @@ export const router = createBrowserRouter([
             {
                 path: '/dashboard',
                 element: <Dashboard></Dashboard>,
+            },
+            {
+                path: '/dashboard/users',
+                element: <Users></Users>,
+            },
+            {
+                path: '/dashboard/classes',
+                element: <Classes />,
             },
         ]
     },
