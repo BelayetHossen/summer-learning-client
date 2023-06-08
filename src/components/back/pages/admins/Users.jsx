@@ -17,28 +17,63 @@ import {
     MenuList,
     MenuItem,
 } from "@material-tailwind/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { getAllUsers } from "../../../../api/User";
+import { updateRoleAdmin, updateRoleInstractor, updateRoleStudent } from "../../../../api/User";
 import Loader from "../../../Loader";
+import { toast } from "react-toastify";
+import { useQuery } from '@tanstack/react-query'
+import axios from "axios";
 
 
 const TABLE_HEAD = ["SL", "Name", "Role", "Status", "Action"];
 
 const Users = () => {
     const [spinning, setSpinning] = useState(false);
-    const [users, setUsers] = useState([]);
-    useEffect(() => {
+    const { refetch, data: users = [], isLoading } = useQuery({
+        queryFn: async () => {
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/allUsers`)
+            return res.data
+        },
+    })
+
+    const makeAdminHandller = (id) => {
         setSpinning(true)
-        getAllUsers().then(data => {
-            setUsers(data)
+        updateRoleAdmin(id, { role: "Admin" }).then(data => {
+            if (data.modifiedCount > 0) {
+                refetch()
+                toast.success("User role updated successfully!");
+            }
             setSpinning(false)
         })
-            .catch(() => setSpinning(false))
-    }, [])
+            .catch(() => { setSpinning(false) })
+    }
+    const makeInstractorHandller = (id) => {
+        setSpinning(true)
+        updateRoleInstractor(id, { role: "Instractor" }).then(data => {
+            if (data.modifiedCount > 0) {
+                refetch()
+                toast.success("User role updated successfully!");
+            }
+            setSpinning(false)
+        })
+            .catch(() => { setSpinning(false) })
+    }
+    const makeStudentHandller = (id) => {
+        setSpinning(true)
+        updateRoleStudent(id, { role: "Student" }).then(data => {
+            if (data.modifiedCount > 0) {
+                refetch()
+                toast.success("User role updated successfully!");
+            }
+            setSpinning(false)
+        })
+            .catch(() => { setSpinning(false) })
+    }
 
     return (
         <>
+            {isLoading && <Loader />}
             {spinning && <Loader />}
             <Card className="h-full w-full">
                 <CardHeader floated={false} shadow={false} className="rounded-none">
@@ -159,9 +194,9 @@ const Users = () => {
                                                 </MenuHandler>
 
                                                 <MenuList>
-                                                    {user.role === "Student" ? <MenuItem disabled>Make student</MenuItem> : <MenuItem>Make admin</MenuItem>}
-                                                    {user.role === "Instractor" ? <MenuItem disabled>Make instractor</MenuItem> : <MenuItem>Make admin</MenuItem>}
-                                                    {user.role === "Admin" ? <MenuItem disabled>Make admin</MenuItem> : <MenuItem>Make admin</MenuItem>}
+                                                    {user.role === "Student" ? <MenuItem disabled>Make student</MenuItem> : <MenuItem onClick={() => { makeStudentHandller(user._id) }}>Make student</MenuItem>}
+                                                    {user.role === "Instractor" ? <MenuItem disabled>Make instractor</MenuItem> : <MenuItem onClick={() => { makeInstractorHandller(user._id) }}>Make instractor</MenuItem>}
+                                                    {user.role === "Admin" ? <MenuItem disabled>Make admin</MenuItem> : <MenuItem onClick={() => { makeAdminHandller(user._id) }}>Make admin</MenuItem>}
                                                 </MenuList>
                                             </Menu>
                                         </td>

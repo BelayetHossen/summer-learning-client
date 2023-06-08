@@ -18,7 +18,6 @@ import {
 import { createElement, useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
-import { ToastContainer } from "react-toastify";
 
 const Header = () => {
     const { auth, user, logOut } = useContext(AuthContext);
@@ -89,7 +88,7 @@ const Header = () => {
 
     return (
         <>
-            <ToastContainer />
+
             <Navbar className="sticky inset-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4">
                 <div className="flex items-center justify-between text-blue-gray-900 mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                     <Typography
