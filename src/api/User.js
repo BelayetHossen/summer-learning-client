@@ -1,4 +1,9 @@
-
+// Get auth user
+export const getAuth = async id => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/getAuth/${id}`)
+    const data = await response.json()
+    return data
+}
 
 // Add user to db
 export const addUser = async userData => {

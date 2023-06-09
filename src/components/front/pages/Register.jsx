@@ -21,8 +21,6 @@ const Register = () => {
 
         setSpinning(true)
         const { name, email, password, phone, gender, address } = getValues();
-
-
         // Image Upload
         const photo = e.photo[0]
         const formData = new FormData()
@@ -70,7 +68,6 @@ const Register = () => {
                 toast.error(err.message)
                 setSpinning(false)
             })
-
 
     };
 

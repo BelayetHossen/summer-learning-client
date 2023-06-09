@@ -5,13 +5,29 @@ import { AuthContext } from '../../../providers/AuthProvider'
 import { FaWindowClose, FaGripLines, FaUserFriends } from "react-icons/fa";
 import { AiOutlineLogout } from "react-icons/ai";
 import { RxDashboard } from "react-icons/rx";
+import axios from "axios";
+
 
 
 const Sidebar = () => {
     const navigate = useNavigate()
-    const { user, logOut } = useContext(AuthContext)
-
     const [isActive, setActive] = useState('false')
+    const { user, logOut } = useContext(AuthContext)
+    const [auth, setAuth] = useState(null);
+
+    const getUserData = async (email) => {
+        try {
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/getAuth/${email}`);
+            const userData = response.data;
+            setAuth(userData);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    getUserData(user?.email);
+
+
+
 
     // Sidebar Responsive Handler
     const handleToggle = () => {
@@ -23,6 +39,7 @@ const Sidebar = () => {
     }
     return (
         <>
+
             {/* mobile Screen Navbar */}
             <div className='z-5 bg-gray-100 text-gray-800 flex justify-between md:hidden'>
                 <div>
@@ -69,7 +86,7 @@ const Sidebar = () => {
                             />
                             <div>
                                 <h4>{user?.displayName}</h4>
-                                <p>{user?.role}</p>
+                                <p>{auth?.role}</p>
                             </div>
                             <hr />
 
@@ -99,16 +116,56 @@ const Sidebar = () => {
                                 <FaUserFriends />
                                 <span className='mx-4 font-medium'>Manage users</span>
                             </NavLink>
-                            <NavLink
-                                to='/dashboard/classes'
-                                className={({ isActive }) =>
-                                    `flex items-center px-4 py-2 mt-2  transition-colors duration-300 transform  hover:bg-gray-100   hover:text-gray-900 ${isActive ? 'bg-purple-300' : 'text-gray-600'
-                                    }`
-                                }
-                            >
-                                <FaUserFriends />
-                                <span className='mx-4 font-medium'>Manage classes</span>
-                            </NavLink>
+
+                            {/* Admin menus */}
+                            {auth?.role == "Admin" && <>
+                                <NavLink
+                                    to='/dashboard/users'
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 mt-2  transition-colors duration-300 transform  hover:bg-gray-100   hover:text-gray-900 ${isActive ? 'bg-purple-300' : 'text-gray-600'
+                                        }`
+                                    }
+                                >
+                                    <FaUserFriends />
+                                    <span className='mx-4 font-medium'>Manage users</span>
+                                </NavLink>
+                                <NavLink
+                                    to='/dashboard/classes'
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 mt-2  transition-colors duration-300 transform  hover:bg-gray-100   hover:text-gray-900 ${isActive ? 'bg-purple-300' : 'text-gray-600'
+                                        }`
+                                    }
+                                >
+                                    <FaUserFriends />
+                                    <span className='mx-4 font-medium'>Manage classes</span>
+                                </NavLink>
+                            </>}
+
+
+                            {/* Instractor menu */}
+                            {auth?.role == "Instractor" && <>
+                                <NavLink
+                                    to='/dashboard/instractor/classes'
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 mt-2  transition-colors duration-300 transform  hover:bg-gray-100   hover:text-gray-900 ${isActive ? 'bg-purple-300' : 'text-gray-600'
+                                        }`
+                                    }
+                                >
+                                    <FaUserFriends />
+                                    <span className='mx-4 font-medium'>My classes</span>
+                                </NavLink>
+                                <NavLink
+                                    to='/dashboard/instractor/addClass'
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 mt-2  transition-colors duration-300 transform  hover:bg-gray-100   hover:text-gray-900 ${isActive ? 'bg-purple-300' : 'text-gray-600'
+                                        }`
+                                    }
+                                >
+                                    <FaUserFriends />
+                                    <span className='mx-4 font-medium'>Add new class</span>
+                                </NavLink>
+                            </>}
+
                         </nav>
                     </div>
                 </div>
