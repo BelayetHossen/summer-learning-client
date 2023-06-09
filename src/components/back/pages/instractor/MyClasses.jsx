@@ -11,7 +11,6 @@ import {
     Tabs,
     TabsHeader,
     Tab,
-    Spinner,
 } from "@material-tailwind/react";
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
@@ -21,6 +20,8 @@ import { useQuery } from '@tanstack/react-query'
 import axios from "axios";
 import { AuthContext } from "../../../../providers/AuthProvider";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { deleteClass } from "../../../../api/Class";
+import Swal from 'sweetalert2'
 
 
 const TABLE_HEAD = ["SL", "Class name", "Price", "Available seats", "Total enrolled", "Status", "Action"];
@@ -29,7 +30,7 @@ const MyClasses = () => {
     const [spinning, setSpinning] = useState(false);
     const { user } = useContext(AuthContext)
 
-    const { data: classes = [], isLoading } = useQuery(['classes'], {
+    const { data: classes = [], isLoading, refetch } = useQuery(['classes'], {
         queryFn: async () => {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/getMyClass/${user?.email}`)
             return res.data;
@@ -39,7 +40,31 @@ const MyClasses = () => {
         return <Loader />;
     }
 
+    const deleteClassHandller = (id) => {
+        setSpinning(true)
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "One class data delete",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'red',
+            cancelButtonColor: 'purple',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                deleteClass(id).then(() => {
+                    toast.success("Data deleted successfully");
+                    refetch()
+                    setSpinning(false)
+                })
+                    .catch(err => console.log(err))
+            }
+            toast.success("Your data is safe");
+            setSpinning(false)
+        })
 
+
+    }
 
 
     return (
@@ -161,7 +186,7 @@ const MyClasses = () => {
                                                 />
                                             </div>
                                         </td>
-                                        <td className="p-4 border-b border-blue-gray-50 flex justify-between items-center gap-1">
+                                        <td className="p-4 w-50 border-b border-blue-gray-50 flex justify-around items-center gap-1">
                                             <Link to={`/dashboard/instructor/editClass/${myClass._id}`} onClick={() => { setSpinning(true) }}>
                                                 <Button
 
@@ -174,10 +199,12 @@ const MyClasses = () => {
 
                                                 </Button>
                                             </Link>
+
                                             <Button
+                                                onClick={() => { deleteClassHandller(myClass._id) }}
                                                 variant="gradient"
                                                 size="sm"
-                                                className="from-red-900 w-full py-3"
+                                                className="from-red-900 py-3"
                                                 type="submit"
                                             >
                                                 <FaTrash />

@@ -47,7 +47,6 @@ const EditClass = () => {
                         .then(data => {
                             if (data.modifiedCount == 1) {
                                 toast.success("Class data updated successfully");
-                                reset()
                                 navigate("/dashboard/instractor/classes", { replace: true });
                             }
 
