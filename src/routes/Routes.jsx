@@ -10,6 +10,8 @@ import PrivateRoute from './PrivateRoute'
 import MyClasses from '../components/back/pages/instractor/MyClasses'
 import Dashboard from '../components/back/pages/dashboard/Dashboard'
 import AddClass from '../components/back/pages/instractor/AddClass'
+import EditClass from '../components/back/pages/EditClass'
+import { singleClass } from '../api/Class'
 
 
 export const router = createBrowserRouter([
@@ -49,19 +51,24 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/dashboard/users',
-                element: <Users></Users>,
+                element: <PrivateRoute><Users></Users></PrivateRoute>,
             },
             {
                 path: '/dashboard/classes',
-                element: <Classes />,
+                element: <PrivateRoute><Classes /></PrivateRoute>,
             },
             {
                 path: '/dashboard/instractor/classes',
-                element: <MyClasses />,
+                element: <PrivateRoute><MyClasses /></PrivateRoute>,
             },
             {
                 path: '/dashboard/instractor/addClass',
-                element: <AddClass />,
+                element: <PrivateRoute><AddClass /></PrivateRoute>,
+            },
+            {
+                path: '/dashboard/instructor/editClass/:id',
+                element: <PrivateRoute><EditClass /></PrivateRoute>,
+                loader: ({ params }) => singleClass(params.id),
             },
         ]
     },

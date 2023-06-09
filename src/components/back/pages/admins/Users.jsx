@@ -30,7 +30,7 @@ const TABLE_HEAD = ["SL", "Name", "Role", "Status", "Action"];
 
 const Users = () => {
     const [spinning, setSpinning] = useState(false);
-    const { refetch, data: users = [], isLoading } = useQuery({
+    const { refetch, data: users = [], isLoading } = useQuery(['users'], {
         queryFn: async () => {
             const res = await axios.get(`${import.meta.env.VITE_API_URL}/allUsers`)
             return res.data

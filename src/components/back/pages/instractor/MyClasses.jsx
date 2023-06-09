@@ -11,70 +11,42 @@ import {
     Tabs,
     TabsHeader,
     Tab,
-    Avatar,
-    Menu,
-    MenuHandler,
-    MenuList,
-    MenuItem,
+    Spinner,
 } from "@material-tailwind/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { updateRoleAdmin, updateRoleInstractor, updateRoleStudent } from "../../../../api/User";
 import Loader from "../../../Loader";
 import { toast } from "react-toastify";
 import { useQuery } from '@tanstack/react-query'
 import axios from "axios";
+import { AuthContext } from "../../../../providers/AuthProvider";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 
-const TABLE_HEAD = ["SL", "Name", "Role", "Status", "Action"];
+const TABLE_HEAD = ["SL", "Class name", "Price", "Available seats", "Total enrolled", "Status", "Action"];
 
 const MyClasses = () => {
     const [spinning, setSpinning] = useState(false);
-    const { refetch, data: users = [], isLoading } = useQuery({
+    const { user } = useContext(AuthContext)
+
+    const { data: classes = [], isLoading } = useQuery(['classes'], {
         queryFn: async () => {
-            const res = await axios.get(`${import.meta.env.VITE_API_URL}/allUsers`)
-            return res.data
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/getMyClass/${user?.email}`)
+            return res.data;
         },
     })
+    if (isLoading) {
+        return <Loader />;
+    }
 
-    const makeAdminHandller = (id) => {
-        setSpinning(true)
-        updateRoleAdmin(id, { role: "Admin" }).then(data => {
-            if (data.modifiedCount > 0) {
-                refetch()
-                toast.success("User role updated successfully!");
-            }
-            setSpinning(false)
-        })
-            .catch(() => { setSpinning(false) })
-    }
-    const makeInstractorHandller = (id) => {
-        setSpinning(true)
-        updateRoleInstractor(id, { role: "Instractor" }).then(data => {
-            if (data.modifiedCount > 0) {
-                refetch()
-                toast.success("User role updated successfully!");
-            }
-            setSpinning(false)
-        })
-            .catch(() => { setSpinning(false) })
-    }
-    const makeStudentHandller = (id) => {
-        setSpinning(true)
-        updateRoleStudent(id, { role: "Student" }).then(data => {
-            if (data.modifiedCount > 0) {
-                refetch()
-                toast.success("User role updated successfully!");
-            }
-            setSpinning(false)
-        })
-            .catch(() => { setSpinning(false) })
-    }
+
+
 
     return (
         <>
             {isLoading && <Loader />}
             {spinning && <Loader />}
+
             <Card className="h-full w-full">
                 <CardHeader floated={false} shadow={false} className="rounded-none">
                     <div className="mb-8 flex items-center justify-between gap-6">
@@ -142,24 +114,18 @@ const MyClasses = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {users.map((user, index) => {
+                            {classes.map((myClass, index) => {
 
                                 return (
-                                    <tr key={user._id}>
+                                    <tr key={myClass._id}>
                                         <td className="p-4 border-b border-blue-gray-50">{index + 1}</td>
                                         <td className="p-4 border-b border-blue-gray-50">
                                             <div className="flex items-center gap-3">
-                                                <Avatar src={user.photoURL} alt={name} size="sm" />
+                                                <img className="w-[80px] rounded" src={myClass.photoName} alt={myClass.photoName} />
+
                                                 <div className="flex flex-col">
                                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                                        {user.displayName}
-                                                    </Typography>
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-normal opacity-70"
-                                                    >
-                                                        {user.email}
+                                                        {myClass.name}
                                                     </Typography>
                                                 </div>
                                             </div>
@@ -167,7 +133,21 @@ const MyClasses = () => {
                                         <td className="p-4 border-b border-blue-gray-50">
                                             <div className="flex flex-col">
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {user.role}
+                                                    $ {myClass.price}
+                                                </Typography>
+                                            </div>
+                                        </td>
+                                        <td className="p-4 border-b border-blue-gray-50">
+                                            <div className="flex flex-col">
+                                                <Typography variant="small" color="blue-gray" className="font-normal">
+                                                    {myClass.seats}
+                                                </Typography>
+                                            </div>
+                                        </td>
+                                        <td className="p-4 border-b border-blue-gray-50">
+                                            <div className="flex flex-col">
+                                                <Typography variant="small" color="blue-gray" className="font-normal">
+                                                    {myClass.enrolled}
                                                 </Typography>
                                             </div>
                                         </td>
@@ -176,29 +156,32 @@ const MyClasses = () => {
                                                 <Chip
                                                     variant="ghost"
                                                     size="sm"
-                                                    value={user ? "online" : "offline"}
-                                                    color={user ? "green" : "blue-gray"}
+                                                    value={myClass.status}
+                                                    color={myClass.status !== "Pending" ? "green" : "blue-gray"}
                                                 />
                                             </div>
                                         </td>
-                                        <td className="p-4 border-b border-blue-gray-50">
-                                            <Menu>
-                                                <MenuHandler>
-                                                    <Button
-                                                        variant="gradient"
-                                                        size="sm"
-                                                        className="from-purple-600 flex items-center gap-3"
-                                                    >
-                                                        <span>Change role</span>
-                                                    </Button>
-                                                </MenuHandler>
+                                        <td className="p-4 border-b border-blue-gray-50 flex justify-between items-center gap-1">
+                                            <Link to={`/dashboard/instructor/editClass/${myClass._id}`} onClick={() => { setSpinning(true) }}>
+                                                <Button
 
-                                                <MenuList>
-                                                    {user.role === "Student" ? <MenuItem disabled>Make student</MenuItem> : <MenuItem onClick={() => { makeStudentHandller(user._id) }}>Make student</MenuItem>}
-                                                    {user.role === "Instractor" ? <MenuItem disabled>Make instractor</MenuItem> : <MenuItem onClick={() => { makeInstractorHandller(user._id) }}>Make instractor</MenuItem>}
-                                                    {user.role === "Admin" ? <MenuItem disabled>Make admin</MenuItem> : <MenuItem onClick={() => { makeAdminHandller(user._id) }}>Make admin</MenuItem>}
-                                                </MenuList>
-                                            </Menu>
+                                                    variant="gradient"
+                                                    size="sm"
+                                                    className="from-purple-600 w-full py-3"
+                                                    type="submit"
+                                                >
+                                                    <FaEdit />
+
+                                                </Button>
+                                            </Link>
+                                            <Button
+                                                variant="gradient"
+                                                size="sm"
+                                                className="from-red-900 w-full py-3"
+                                                type="submit"
+                                            >
+                                                <FaTrash />
+                                            </Button>
                                         </td>
                                     </tr>
                                 );
