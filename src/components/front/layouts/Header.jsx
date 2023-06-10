@@ -45,9 +45,7 @@ const Header = () => {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
-                    Account
-                </a>
+                <Link to={'/classes'}>All classes</Link>
             </Typography>
             <Typography
                 as="li"
@@ -55,9 +53,7 @@ const Header = () => {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <a href="#" className="flex items-center">
-                    Blocks
-                </a>
+                <Link to={'/instructors'}>Instructors</Link>
             </Typography>
             <Typography
                 as="li"
@@ -233,9 +229,7 @@ const Header = () => {
                 </div>
                 <MobileNav open={openNav}>
                     {navList}
-                    <Button variant="gradient" size="sm" fullWidth className="mb-2">
-                        <span>Buy Now</span>
-                    </Button>
+
                 </MobileNav>
             </Navbar>
 

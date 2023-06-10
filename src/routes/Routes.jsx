@@ -7,11 +7,16 @@ import AdminMain from '../components/back/layouts/AdminMain'
 import Users from '../components/back/pages/admins/Users'
 import Classes from '../components/back/pages/admins/Classes'
 import PrivateRoute from './PrivateRoute'
-import MyClasses from '../components/back/pages/instractor/MyClasses'
 import Dashboard from '../components/back/pages/dashboard/Dashboard'
-import AddClass from '../components/back/pages/instractor/AddClass'
 import EditClass from '../components/back/pages/EditClass'
-import { singleClass } from '../api/Class'
+import SelectedClass from '../components/back/pages/student/SelectedClass'
+import EnrolledClass from '../components/back/pages/student/EnrolledClass'
+import AllClasses from '../components/front/pages/AllClasses'
+import Instructors from '../components/front/pages/Instructors'
+import MyClasses from '../components/back/pages/instructor/MyClasses'
+import Addclass from '../components/back/pages/instructor/AddClass'
+import InstructorClassess from '../components/front/pages/InstructorClassess'
+import { instuctorClasss, singleClass } from '../api/Class'
 
 
 export const router = createBrowserRouter([
@@ -31,6 +36,19 @@ export const router = createBrowserRouter([
                 path: '/register',
                 element: <Register></Register>,
             },
+            {
+                path: '/classes',
+                element: <AllClasses></AllClasses>,
+            },
+            {
+                path: '/instructors',
+                element: <Instructors />,
+            },
+            {
+                path: '/instructor/classes/:email',
+                element: <InstructorClassess />,
+                loader: ({ params }) => instuctorClasss(params.email),
+            }
         ]
     },
 
@@ -43,7 +61,7 @@ export const router = createBrowserRouter([
 
     {
         path: '/dashboard',
-        element: <AdminMain></AdminMain>,
+        element: <PrivateRoute><AdminMain></AdminMain></PrivateRoute>,
         children: [
             {
                 path: '/dashboard',
@@ -58,17 +76,25 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><Classes /></PrivateRoute>,
             },
             {
-                path: '/dashboard/instractor/classes',
+                path: '/dashboard/instructor/classes',
                 element: <PrivateRoute><MyClasses /></PrivateRoute>,
             },
             {
-                path: '/dashboard/instractor/addClass',
-                element: <PrivateRoute><AddClass /></PrivateRoute>,
+                path: '/dashboard/instructor/addClass',
+                element: <PrivateRoute><Addclass /></PrivateRoute>,
             },
             {
                 path: '/dashboard/instructor/editClass/:id',
                 element: <PrivateRoute><EditClass /></PrivateRoute>,
                 loader: ({ params }) => singleClass(params.id),
+            },
+            {
+                path: '/dashboard/student/selectedClass',
+                element: <PrivateRoute><SelectedClass /></PrivateRoute>,
+            },
+            {
+                path: '/dashboard/student/enrolledClass',
+                element: <PrivateRoute><EnrolledClass /></PrivateRoute>,
             },
         ]
     },

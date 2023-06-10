@@ -19,6 +19,13 @@ export const singleClass = async id => {
     return data
 }
 
+// Get instructor classes
+export const instuctorClasss = async email => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/instuctorClasss/${email}`);
+    const data = await response.json();
+    return data;
+};
+
 // / update class to db
 export const updateClass = async (classData, id) => {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/mySingleClass/${id}`, {

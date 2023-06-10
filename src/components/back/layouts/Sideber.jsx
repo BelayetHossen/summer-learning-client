@@ -5,6 +5,7 @@ import { AuthContext } from '../../../providers/AuthProvider'
 import { FaWindowClose, FaGripLines, FaUserFriends } from "react-icons/fa";
 import { AiOutlineLogout } from "react-icons/ai";
 import { RxDashboard } from "react-icons/rx";
+import { BsBookmarkHeart, BsBookmarkCheck } from "react-icons/bs";
 import axios from "axios";
 
 
@@ -142,10 +143,10 @@ const Sidebar = () => {
                             </>}
 
 
-                            {/* Instractor menu */}
-                            {auth?.role == "Instractor" && <>
+                            {/* instructor menu */}
+                            {auth?.role == "Instructor" && <>
                                 <NavLink
-                                    to='/dashboard/instractor/classes'
+                                    to='/dashboard/instructor/classes'
                                     className={({ isActive }) =>
                                         `flex items-center px-4 py-2 mt-2  transition-colors duration-300 transform  hover:bg-gray-100   hover:text-gray-900 ${isActive ? 'bg-purple-300' : 'text-gray-600'
                                         }`
@@ -155,7 +156,7 @@ const Sidebar = () => {
                                     <span className='mx-4 font-medium'>My classes</span>
                                 </NavLink>
                                 <NavLink
-                                    to='/dashboard/instractor/addClass'
+                                    to='/dashboard/instructor/addClass'
                                     className={({ isActive }) =>
                                         `flex items-center px-4 py-2 mt-2  transition-colors duration-300 transform  hover:bg-gray-100   hover:text-gray-900 ${isActive ? 'bg-purple-300' : 'text-gray-600'
                                         }`
@@ -164,6 +165,32 @@ const Sidebar = () => {
                                     <FaUserFriends />
                                     <span className='mx-4 font-medium'>Add new class</span>
                                 </NavLink>
+                            </>}
+
+
+                            {/* Student menu */}
+                            {auth?.role == "Student" && <>
+                                <NavLink
+                                    to='/dashboard/student/selectedClass'
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 mt-2  transition-colors duration-300 transform  hover:bg-gray-100   hover:text-gray-900 ${isActive ? 'bg-purple-300' : 'text-gray-600'
+                                        }`
+                                    }
+                                >
+                                    <BsBookmarkCheck />
+                                    <span className='mx-4 font-medium'>Selected Classes</span>
+                                </NavLink>
+                                <NavLink
+                                    to='/dashboard/student/enrolledClass'
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 mt-2  transition-colors duration-300 transform  hover:bg-gray-100   hover:text-gray-900 ${isActive ? 'bg-purple-300' : 'text-gray-600'
+                                        }`
+                                    }
+                                >
+                                    <BsBookmarkHeart />
+                                    <span className='mx-4 font-medium'>Enrolled Classes</span>
+                                </NavLink>
+
                             </>}
 
                         </nav>

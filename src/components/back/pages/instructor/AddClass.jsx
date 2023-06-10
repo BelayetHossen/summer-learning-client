@@ -9,7 +9,7 @@ import { addClass } from "../../../../api/Class";
 import Loader from "../../../Loader";
 
 
-const AddclassName = () => {
+const Addclass = () => {
     const { user } = useContext(AuthContext)
     const [spinning, setSpinning] = useState(false);
     const { register, formState: { errors }, handleSubmit, getValues, reset } = useForm();
@@ -36,8 +36,8 @@ const AddclassName = () => {
                     price: parseFloat(price),
                     seats: parseFloat(seats),
                     enrolled: 0,
-                    instractor_name: user?.displayName,
-                    instractor_email: user?.email,
+                    instructor_name: user?.displayName,
+                    instructor_email: user?.email,
                     duration: parseFloat(duration),
                     photoName,
                     details,
@@ -49,7 +49,7 @@ const AddclassName = () => {
                         if (data.insertedId) {
                             toast.success("New class added successfully");
                             reset()
-                            navigate("/dashboard/instractor/classes", { replace: true });
+                            navigate("/dashboard/instructor/classes", { replace: true });
                         }
 
                         toast.warning(data.message);
@@ -76,7 +76,7 @@ const AddclassName = () => {
                         </Typography>
                     </div>
                     <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                        <Link to={'/dashboard/instractor/classes'}>
+                        <Link to={'/dashboard/instructor/classes'}>
                             <Button
                                 variant="gradient"
                                 size="sm"
@@ -124,14 +124,14 @@ const AddclassName = () => {
                         <div className='flex justify-between gap-2'>
                             <div className="mb-2 w-full">
                                 <label className="block text-sm font-semibold text-gray-800">
-                                    Instractor name
+                                    Instructor name
                                 </label>
                                 <input defaultValue={user?.displayName} {...register("insName")} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40" disabled />
                             </div>
 
                             <div className="mb-2 w-full">
                                 <label className="block text-sm font-semibold text-gray-800">
-                                    Instractor email
+                                    Instructor email
                                 </label>
                                 <input defaultValue={user?.email} {...register("insEmail")} className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40" disabled />
                             </div>
@@ -187,4 +187,4 @@ const AddclassName = () => {
     );
 };
 
-export default AddclassName;
+export default Addclass;

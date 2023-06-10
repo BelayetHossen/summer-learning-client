@@ -49,9 +49,9 @@ export const updateRoleStudent = async (id, role) => {
     const data = await response.json()
     return data
 }
-// user role update to Instractor
-export const updateRoleInstractor = async (id, role) => {
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/updateRoleInstractor/${id}`, {
+// user role update to instructor
+export const updateRoleInstructor = async (id, role) => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/updateRoleInstructor/${id}`, {
         method: 'PATCH',
         headers: {
             'content-type': 'application/json'

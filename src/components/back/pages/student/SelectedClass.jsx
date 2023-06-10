@@ -26,7 +26,7 @@ import Swal from 'sweetalert2'
 
 const TABLE_HEAD = ["SL", "Class name", "Price", "Available seats", "Total enrolled", "Status", "Action"];
 
-const MyClasses = () => {
+const SelectedClass = () => {
     const [spinning, setSpinning] = useState(false);
     const { user } = useContext(AuthContext)
 
@@ -84,7 +84,7 @@ const MyClasses = () => {
                             </Typography>
                         </div>
                         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                            <Link to={'/dashboard/instractor/addClass'}>
+                            <Link to={'/dashboard/instructor/addClass'}>
                                 <Button
                                     variant="gradient"
                                     size="sm"
@@ -109,8 +109,8 @@ const MyClasses = () => {
                                     <Tab value="Students" className="">
                                         &nbsp;Students&nbsp;
                                     </Tab>
-                                    <Tab value="Instractors" className="">
-                                        &nbsp;Instractors&nbsp;
+                                    <Tab value="Instructors" className="">
+                                        &nbsp;Instructors&nbsp;
                                     </Tab>
                                 </Button>
                             </TabsHeader>
@@ -224,4 +224,4 @@ const MyClasses = () => {
 
 
 
-export default MyClasses;
+export default SelectedClass;
