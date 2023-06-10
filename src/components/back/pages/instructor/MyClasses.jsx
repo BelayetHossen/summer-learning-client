@@ -7,7 +7,6 @@ import {
     Typography,
     Button,
     CardBody,
-    Chip,
     Tabs,
     TabsHeader,
     Tab,
@@ -178,12 +177,9 @@ const MyClasses = () => {
                                         </td>
                                         <td className="p-4 border-b border-blue-gray-50">
                                             <div className="w-max">
-                                                <Chip
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    value={myClass.status}
-                                                    color={myClass.status !== "Pending" ? "green" : "blue-gray"}
-                                                />
+                                                {myClass.status == "Denied" && <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">Denied</span>}
+                                                {myClass.status == "Pending" && <span className="inline-flex items-center rounded-md bg-gray-50 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">Pending</span>}
+                                                {myClass.status == "Approved" && <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Approved</span>}
                                             </div>
                                         </td>
                                         <td className="p-4 w-50 border-b border-blue-gray-50 flex justify-around items-center gap-1">

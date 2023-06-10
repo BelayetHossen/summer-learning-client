@@ -26,6 +26,46 @@ export const instuctorClasss = async email => {
     return data;
 };
 
+// class status update to Approved
+export const updateClassApproved = async (id, status) => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/updateClassApproved/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(status),
+    })
+
+    const data = await response.json()
+    return data
+}
+// class status update to Pending
+export const updateClassPending = async (id, status) => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/updateClassPending/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(status),
+    })
+
+    const data = await response.json()
+    return data
+}
+// class status update to Denied
+export const updateClassDenied = async (id, status) => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/updateClassDenied/${id}`, {
+        method: 'PATCH',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(status),
+    })
+
+    const data = await response.json()
+    return data
+}
+
 // / update class to db
 export const updateClass = async (classData, id) => {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/mySingleClass/${id}`, {
