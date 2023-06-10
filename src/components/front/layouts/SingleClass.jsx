@@ -1,11 +1,45 @@
 import { Button } from "@material-tailwind/react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../../providers/AuthProvider";
+import axios from "axios";
+import { selectClass } from "../../../api/User";
+import { toast } from "react-toastify";
 
 const SingleClass = ({ singleClass }) => {
+    const { user } = useContext(AuthContext);
+    const [auth, setAuth] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async (email) => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/getAuth/${email}`);
+                const userData = response.data;
+                setAuth(userData);
+            } catch (error) {
+                // Handle error here
+                console.error(error);
+            }
+        };
+
+        fetchData(user?.email);
+    }, [user]);
+
+
+
+    const selectClassHandller = (userId, classId) => {
+        selectClass(userId, classId).then(data => {
+            if (data.modifiedCount > 0) {
+                toast.success("Class added successfully");
+            }
+            toast.warning(data.message);
+        })
+            .catch((error) => { toast.success(error); })
+    }
 
     return (
         <div>
-            <div className={`md:flex justify-between gap-20 gap-3 shadow-md hover:shadow-2xl hover:scale-102 duration-300 px-8 py-7 rounded overflow-hidden ${singleClass.seats == 0 ? "bg-red-300" : "bg-gray-100"}`}>
+            <div className={`md:flex justify-between gap-20 gap-3 shadow-md hover:shadow-2xl hover:scale-102 duration-300 px-8 py-7 rounded overflow-hidden ${singleClass.seats == 0 ? "bg-red-200" : "bg-gray-100"}`}>
                 <div className="w-full">
                     <img
                         className="w-full object-contain hover:scale-105 duration-500"
@@ -24,7 +58,7 @@ const SingleClass = ({ singleClass }) => {
                     <p className="text-sm text-gray-600">
                         Instructor name: <span className="font-semibold capitalize text-gray-600">{singleClass?.name}</span>
                     </p>
-                    <p className="text-sm text-gray-600">
+                    <p className={`text-sm ${singleClass.seats == 0 ? "text-blue-600" : "text-gray-600"}`}>
                         Available seats: <span className="font-semibold capitalize text-gray-600">{singleClass?.seats}</span>
                     </p>
                     <p className="text-sm text-gray-600">
@@ -33,12 +67,54 @@ const SingleClass = ({ singleClass }) => {
                 </div>
 
 
-                <div className="flex md:flex-col justify-between items-center gap-2 w-full">
-                    <Button className="btn bg-purple-700 w-full">Select class</Button>
-                    <Button className="btn bg-purple-700 w-full">Enroll now</Button>
+                {singleClass.seats === 0 ? (
+                    <div className="flex md:flex-col justify-between items-center gap-2 w-full">
+                        <span>
+                            <Button disabled className="btn bg-purple-700 w-full">
+                                Select class
+                            </Button>
+                        </span>
+                        <span><Button disabled className="btn bg-purple-700 w-full">Enroll now</Button></span>
+                    </div>
+                ) : auth?.selectedClass?.includes(singleClass._id) ? (
+                    <div className="flex md:flex-col justify-between items-center gap-2 w-full">
+                        <span>
+                            <Button disabled className="btn bg-purple-700 w-full">
+                                Select class
+                            </Button>
+                        </span>
+                        <span><Button disabled className="btn bg-purple-700 w-full">Enroll now</Button></span>
+                    </div>
+                ) : auth?.role === "Instructor" ? (
+                    <div className="flex md:flex-col justify-between items-center gap-2 w-full">
+                        <span>
+                            <Button disabled className="btn bg-purple-700 w-full">
+                                Select class
+                            </Button>
+                        </span>
+                        <span><Button disabled className="btn bg-purple-700 w-full">Enroll now</Button></span>
+                    </div>
+                ) : auth?.role === "Admin" ? (
+                    <div className="flex md:flex-col justify-between items-center gap-2 w-full">
+                        <span>
+                            <Button disabled className="btn bg-purple-700 w-full">
+                                Select class
+                            </Button>
+                        </span>
+                        <span><Button disabled className="btn bg-purple-700 w-full">Enroll now</Button></span>
+                    </div>
+                ) : (
+                    <div className="flex md:flex-col justify-between items-center gap-2 w-full">
+                        <span>
+                            <Button onClick={() => selectClassHandller(auth._id, singleClass._id)} className="btn bg-purple-700 w-full">
+                                Select class
+                            </Button>
+                        </span>
+                        <span><Button className="btn bg-purple-700 w-full">Enroll now</Button></span>
+                    </div>
+                )}
 
-                </div>
-            </div>
+            </div >
         </div >
     );
 };

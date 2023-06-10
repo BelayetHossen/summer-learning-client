@@ -7,7 +7,6 @@ import {
     Typography,
     Button,
     CardBody,
-    Chip,
     Tabs,
     TabsHeader,
     Tab,
@@ -19,12 +18,12 @@ import { toast } from "react-toastify";
 import { useQuery } from '@tanstack/react-query'
 import axios from "axios";
 import { AuthContext } from "../../../../providers/AuthProvider";
-import { FaEdit, FaTrash } from "react-icons/fa";
+import { FaTrash } from "react-icons/fa";
 import { deleteClass } from "../../../../api/Class";
 import Swal from 'sweetalert2'
 
 
-const TABLE_HEAD = ["SL", "Class name", "Price", "Available seats", "Total enrolled", "Status", "Action"];
+const TABLE_HEAD = ["SL", "Class name", "Price", "Status", "Action"];
 
 const SelectedClass = () => {
     const [spinning, setSpinning] = useState(false);
@@ -32,7 +31,7 @@ const SelectedClass = () => {
 
     const { data: classes = [], isLoading, refetch } = useQuery(['classes'], {
         queryFn: async () => {
-            const res = await axios.get(`${import.meta.env.VITE_API_URL}/getMyClass/${user?.email}`)
+            const res = await axios.get(`${import.meta.env.VITE_API_URL}/getSelectedClass/${user?.email}`)
             return res.data;
         },
     })
@@ -162,43 +161,20 @@ const SelectedClass = () => {
                                                 </Typography>
                                             </div>
                                         </td>
+
                                         <td className="p-4 border-b border-blue-gray-50">
-                                            <div className="flex flex-col">
-                                                <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {myClass.seats}
-                                                </Typography>
-                                            </div>
-                                        </td>
-                                        <td className="p-4 border-b border-blue-gray-50">
-                                            <div className="flex flex-col">
-                                                <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {myClass.enrolled}
-                                                </Typography>
-                                            </div>
-                                        </td>
-                                        <td className="p-4 border-b border-blue-gray-50">
-                                            <div className="w-max">
-                                                <Chip
-                                                    variant="ghost"
-                                                    size="sm"
-                                                    value={myClass.status}
-                                                    color={myClass.status !== "Pending" ? "green" : "blue-gray"}
-                                                />
-                                            </div>
+                                            <Button
+                                                onClick={() => { deleteClassHandller(myClass._id) }}
+                                                variant="gradient"
+                                                size="sm"
+                                                className="from-purple-700 py-3"
+                                                type="submit"
+                                            >
+                                                Pay now
+                                            </Button>
                                         </td>
                                         <td className="p-4 w-50 border-b border-blue-gray-50 flex justify-around items-center gap-1">
-                                            <Link to={`/dashboard/instructor/editClass/${myClass._id}`} onClick={() => { setSpinning(true) }}>
-                                                <Button
 
-                                                    variant="gradient"
-                                                    size="sm"
-                                                    className="from-purple-600 w-full py-3"
-                                                    type="submit"
-                                                >
-                                                    <FaEdit />
-
-                                                </Button>
-                                            </Link>
 
                                             <Button
                                                 onClick={() => { deleteClassHandller(myClass._id) }}
@@ -217,7 +193,7 @@ const SelectedClass = () => {
                     </table>
                 </CardBody>
 
-            </Card>
+            </Card >
         </>
     );
 }

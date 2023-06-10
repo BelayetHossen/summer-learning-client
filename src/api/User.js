@@ -62,3 +62,17 @@ export const updateRoleInstructor = async (id, role) => {
     const data = await response.json()
     return data
 }
+
+// select class for student
+export const selectClass = async (userId, classId) => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/selectClass/${userId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ classId })
+    });
+
+    const data = await response.json();
+    return data;
+};

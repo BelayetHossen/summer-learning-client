@@ -118,15 +118,7 @@ const Classes = () => {
                     .catch(() => { setSpinning(false) })
             }
         })
-        // setSpinning(true)
-        // updateClassPending(id, { status: "Denied", denied_for: "" }).then(data => {
-        //     if (data.modifiedCount > 0) {
-        //         refetch()
-        //         toast.success("Class move to Denied");
-        //     }
-        //     setSpinning(false)
-        // })
-        //     .catch(() => { setSpinning(false) })
+
     }
 
     return (

@@ -25,6 +25,12 @@ export const instuctorClasss = async email => {
     const data = await response.json();
     return data;
 };
+// Get instructor classes
+export const instuctorClasssFront = async email => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/instuctorClasssFront/${email}`);
+    const data = await response.json();
+    return data;
+};
 
 // class status update to Approved
 export const updateClassApproved = async (id, status) => {

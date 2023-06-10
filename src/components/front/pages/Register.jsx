@@ -41,7 +41,8 @@ const Register = () => {
                     role: "Student",
                     phone,
                     gender,
-                    address
+                    address,
+                    selectedClass: []
                 }
 
                 createUser(email, password)

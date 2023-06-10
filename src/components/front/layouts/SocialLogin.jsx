@@ -22,7 +22,8 @@ const SocialLogin = () => {
                     role: "Student",
                     phone: "",
                     gender: "",
-                    address: ""
+                    address: "",
+                    selectedClass: []
                 }
                 addUser(userData)
                     .then(data => {
