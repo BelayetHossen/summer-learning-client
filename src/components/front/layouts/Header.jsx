@@ -87,13 +87,8 @@ const Header = () => {
 
             <Navbar className="sticky inset-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4">
                 <div className="flex items-center justify-between text-blue-gray-900 mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-                    <Typography
-                        as="a"
-                        href="#"
-                        className="mr-4 cursor-pointer py-1.5 font-medium"
-                    >
-                        Material Tailwind
-                    </Typography>
+                    <Link to={'/'}><img className="w-[250px]" src="https://i.ibb.co/pyjKW3h/logo2.png" alt="" /></Link>
+
                     <div className="">
                         <div className="flex items-center gap-4">
                             <div className="mr-4 hidden lg:block">{navList}</div>

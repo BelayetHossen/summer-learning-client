@@ -57,9 +57,11 @@ const MyClasses = () => {
                     setSpinning(false)
                 })
                     .catch(err => console.log(err))
+            } else {
+                toast.success("Your data is safe");
+                setSpinning(false)
             }
-            toast.success("Your data is safe");
-            setSpinning(false)
+
         })
 
 

@@ -11,7 +11,7 @@ import {
     TabsHeader,
     Tab,
 } from "@material-tailwind/react";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Loader from "../../../Loader";
 import { toast } from "react-toastify";
@@ -19,8 +19,8 @@ import { useQuery } from '@tanstack/react-query'
 import axios from "axios";
 import { AuthContext } from "../../../../providers/AuthProvider";
 import { FaTrash } from "react-icons/fa";
-import { deleteClass } from "../../../../api/Class";
 import Swal from 'sweetalert2'
+import { deleteSelectedClass } from "../../../../api/User";
 
 
 const TABLE_HEAD = ["SL", "Class name", "Price", "Status", "Action"];
@@ -28,6 +28,22 @@ const TABLE_HEAD = ["SL", "Class name", "Price", "Status", "Action"];
 const SelectedClass = () => {
     const [spinning, setSpinning] = useState(false);
     const { user } = useContext(AuthContext)
+    const [auth, setAuth] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async (email) => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/getAuth/${email}`);
+                const userData = response.data;
+                setAuth(userData);
+            } catch (error) {
+                // Handle error here
+                console.error(error);
+            }
+        };
+
+        fetchData(user?.email);
+    }, [user]);
 
     const { data: classes = [], isLoading, refetch } = useQuery(['classes'], {
         queryFn: async () => {
@@ -39,11 +55,11 @@ const SelectedClass = () => {
         return <Loader />;
     }
 
-    const deleteClassHandller = (id) => {
+    const deleteClassHandller = (userId, classId) => {
         setSpinning(true)
         Swal.fire({
             title: 'Are you sure?',
-            text: "One class data delete",
+            text: "One class delete from selected",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: 'red',
@@ -51,15 +67,16 @@ const SelectedClass = () => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                deleteClass(id).then(() => {
+                deleteSelectedClass(userId, classId).then(() => {
                     toast.success("Data deleted successfully");
                     refetch()
                     setSpinning(false)
                 })
                     .catch(err => console.log(err))
+            } else {
+                toast.success("Your data is safe");
+                setSpinning(false)
             }
-            toast.success("Your data is safe");
-            setSpinning(false)
         })
 
 
@@ -164,7 +181,7 @@ const SelectedClass = () => {
 
                                         <td className="p-4 border-b border-blue-gray-50">
                                             <Button
-                                                onClick={() => { deleteClassHandller(myClass._id) }}
+
                                                 variant="gradient"
                                                 size="sm"
                                                 className="from-purple-700 py-3"
@@ -177,7 +194,7 @@ const SelectedClass = () => {
 
 
                                             <Button
-                                                onClick={() => { deleteClassHandller(myClass._id) }}
+                                                onClick={() => { deleteClassHandller(auth?._id, myClass._id) }}
                                                 variant="gradient"
                                                 size="sm"
                                                 className="from-red-900 py-3"
