@@ -85,7 +85,7 @@ const Header = () => {
     return (
         <>
 
-            <Navbar className="sticky inset-0 z-10 h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4">
+            <Navbar className="sticky inset-0 z-[50] h-max max-w-full rounded-none py-2 px-4 lg:px-8 lg:py-4">
                 <div className="flex items-center justify-between text-blue-gray-900 mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                     <Link to={'/'}><img className="w-[250px]" src="https://i.ibb.co/pyjKW3h/logo2.png" alt="" /></Link>
 

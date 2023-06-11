@@ -86,6 +86,7 @@ export const updateClass = async (classData, id) => {
     return data;
 };
 
+
 // Delete a class
 export const deleteClass = async id => {
     const response = await fetch(`${import.meta.env.VITE_API_URL}/deleteClass/${id}`, {

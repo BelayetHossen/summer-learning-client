@@ -17,6 +17,7 @@ import MyClasses from '../components/back/pages/instructor/MyClasses'
 import Addclass from '../components/back/pages/instructor/AddClass'
 import InstructorClassess from '../components/front/pages/InstructorClassess'
 import { instuctorClasssFront, singleClass } from '../api/Class'
+import SinClassPage from '../components/front/pages/SinClassPage'
 
 
 export const router = createBrowserRouter([
@@ -48,6 +49,11 @@ export const router = createBrowserRouter([
                 path: '/instructor/classes/:email',
                 element: <InstructorClassess />,
                 loader: ({ params }) => instuctorClasssFront(params.email),
+            },
+            {
+                path: '/class/:id',
+                element: <SinClassPage />,
+                loader: ({ params }) => singleClass(params.id),
             }
         ]
     },

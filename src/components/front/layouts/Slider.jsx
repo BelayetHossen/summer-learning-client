@@ -19,19 +19,24 @@ const Slider = () => {
             )}
         >
             <img
-                src="https://i.ibb.co/v1Sc6yR/bnnnn1.jpg"
+                src="https://i.ibb.co/8bB99ps/banner5.jpg"
                 alt="image 1"
-                className="h-full w-full object-cover"
+                className="md:h-[450px] md:w-full object-cover"
             />
             <img
-                src="https://i.ibb.co/v1Sc6yR/bnnnn1.jpg"
+                src="https://i.ibb.co/wRr6Ssq/banner4.jpg"
+                alt="image 1"
+                className="md:h-[450px] w-full object-cover"
+            />
+            <img
+                src="https://i.ibb.co/n1pHYD3/banner2.jpg"
                 alt="image 2"
-                className="h-full w-full object-cover"
+                className="md:h-[450px] w-full object-cover"
             />
             <img
-                src="https://i.ibb.co/v1Sc6yR/bnnnn1.jpg"
+                src="https://i.ibb.co/wy0v3Nv/banner3.jpg"
                 alt="image 3"
-                className="h-full w-full object-cover"
+                className="md:h-[450px] w-full object-cover"
             />
         </Carousel>
     );

@@ -1,16 +1,12 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+
 import { UserPlusIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     CardHeader,
-    Input,
     Typography,
     Button,
     CardBody,
     Chip,
-    Tabs,
-    TabsHeader,
-    Tab,
     Avatar,
     Menu,
     MenuHandler,
@@ -98,30 +94,7 @@ const Users = () => {
                             </Link>
                         </div>
                     </div>
-                    <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                        <Tabs value="all" className="w-full md:w-max">
-                            <TabsHeader className="rounded">
-                                <Button
-                                    variant="gradient"
-                                    size="sm"
-                                    className="from-purple-600 flex items-center"
-                                >
-                                    <Tab value="All" className="">
-                                        &nbsp;All&nbsp;
-                                    </Tab>
-                                    <Tab value="Students" className="">
-                                        &nbsp;Students&nbsp;
-                                    </Tab>
-                                    <Tab value="Instructors" className="">
-                                        &nbsp;Instructors&nbsp;
-                                    </Tab>
-                                </Button>
-                            </TabsHeader>
-                        </Tabs>
-                        <div className="w-full md:w-72">
-                            <Input label="Search" icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
-                        </div>
-                    </div>
+
                 </CardHeader>
 
                 <CardBody className="overflow-scroll px-0">

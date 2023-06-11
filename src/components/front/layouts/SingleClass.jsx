@@ -30,6 +30,16 @@ const SingleClass = ({ singleClass }) => {
 
     const selectClassHandller = (userEmail, classId) => {
         setLoading(true)
+        if (auth?.email == "Admin") {
+            toast.warning("Admin can't select any course!");
+            setLoading(false)
+            return;
+        }
+        if (auth?.email == "Instructor") {
+            toast.warning("Instructor can't select any course!");
+            setLoading(false)
+            return;
+        }
         selectClass(userEmail, classId).then(data => {
             if (data.insertedId) {
                 toast.success("Class added successfully");
@@ -72,6 +82,18 @@ const SingleClass = ({ singleClass }) => {
                 </div>
 
                 <div className="flex md:flex-col justify-between items-center gap-2 w-full">
+                    <Link to={`/class/${singleClass._id}`}>
+                        <Button
+
+                            variant="gradient"
+                            size="sm"
+                            className="from-purple-600 w-full py-3"
+                            type="submit"
+                        >
+                            Details
+
+                        </Button>
+                    </Link>
                     <span>
                         <Button onClick={() => selectClassHandller(auth?.email, singleClass?._id)} className="btn bg-purple-700 w-full">
                             Select class
