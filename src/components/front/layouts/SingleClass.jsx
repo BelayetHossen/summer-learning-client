@@ -88,7 +88,6 @@ const SingleClass = ({ singleClass }) => {
                             variant="gradient"
                             size="sm"
                             className="from-purple-600 w-full py-3"
-                            type="submit"
                         >
                             Details
 
@@ -99,7 +98,6 @@ const SingleClass = ({ singleClass }) => {
                             Select class
                         </Button>
                     </span>
-                    <span><Button className="btn bg-purple-700 w-full">Enroll now</Button></span>
                 </div>
                 {/* {singleClass.seats === 0 ? (
                     <div className="flex md:flex-col justify-between items-center gap-2 w-full">

@@ -18,6 +18,7 @@ import Addclass from '../components/back/pages/instructor/AddClass'
 import InstructorClassess from '../components/front/pages/InstructorClassess'
 import { instuctorClasssFront, singleClass } from '../api/Class'
 import SinClassPage from '../components/front/pages/SinClassPage'
+import Page404 from '../components/front/pages/Page404'
 
 
 export const router = createBrowserRouter([
@@ -54,7 +55,8 @@ export const router = createBrowserRouter([
                 path: '/class/:id',
                 element: <SinClassPage />,
                 loader: ({ params }) => singleClass(params.id),
-            }
+            },
+
         ]
     },
 
@@ -103,5 +105,10 @@ export const router = createBrowserRouter([
                 element: <PrivateRoute><EnrolledClass /></PrivateRoute>,
             },
         ]
+    },
+
+    {
+        path: '/*',
+        element: <Page404 />,
     },
 ])

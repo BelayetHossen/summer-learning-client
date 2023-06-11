@@ -23,6 +23,7 @@ const SocialLogin = () => {
                     phone: "",
                     gender: "",
                     address: "",
+                    students: 0,
                 }
                 addUser(userData)
                     .then(data => {

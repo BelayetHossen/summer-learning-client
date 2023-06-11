@@ -42,6 +42,7 @@ const Register = () => {
                     phone,
                     gender,
                     address,
+                    students: 0,
                 }
 
                 createUser(email, password)
