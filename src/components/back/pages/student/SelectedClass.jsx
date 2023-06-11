@@ -1,15 +1,11 @@
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
+
 import { UserPlusIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     CardHeader,
-    Input,
     Typography,
     Button,
     CardBody,
-    Tabs,
-    TabsHeader,
-    Tab,
 } from "@material-tailwind/react";
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -20,10 +16,10 @@ import axios from "axios";
 import { AuthContext } from "../../../../providers/AuthProvider";
 import { FaTrash } from "react-icons/fa";
 import Swal from 'sweetalert2'
-import { deleteSelectedClass } from "../../../../api/User";
+import { deleteSelectedClass } from "../../../../api/Class";
 
 
-const TABLE_HEAD = ["SL", "Class name", "Price", "Status", "Action"];
+const TABLE_HEAD = ["SL", "Class name", "Price", "Payment", "Action"];
 
 const SelectedClass = () => {
     const [spinning, setSpinning] = useState(false);
@@ -55,7 +51,7 @@ const SelectedClass = () => {
         return <Loader />;
     }
 
-    const deleteClassHandller = (userId, classId) => {
+    const deleteClassHandller = (userEmail, classId) => {
         setSpinning(true)
         Swal.fire({
             title: 'Are you sure?',
@@ -67,7 +63,7 @@ const SelectedClass = () => {
             confirmButtonText: 'Yes, delete it!'
         }).then((result) => {
             if (result.isConfirmed) {
-                deleteSelectedClass(userId, classId).then(() => {
+                deleteSelectedClass(userEmail, classId).then(() => {
                     toast.success("Data deleted successfully");
                     refetch()
                     setSpinning(false)
@@ -93,10 +89,10 @@ const SelectedClass = () => {
                     <div className="mb-8 flex items-center justify-between gap-6">
                         <div>
                             <Typography variant="h5" color="blue-gray">
-                                My all classes
+                                My selected classes
                             </Typography>
                             <Typography color="gray" className="mt-1 font-normal">
-                                See information about all classes
+                                See information about my selected classes
                             </Typography>
                         </div>
                         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
@@ -111,30 +107,7 @@ const SelectedClass = () => {
                             </Link>
                         </div>
                     </div>
-                    <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                        <Tabs value="all" className="w-full md:w-max">
-                            <TabsHeader className="rounded">
-                                <Button
-                                    variant="gradient"
-                                    size="sm"
-                                    className="from-purple-600 flex items-center"
-                                >
-                                    <Tab value="All" className="">
-                                        &nbsp;All&nbsp;
-                                    </Tab>
-                                    <Tab value="Students" className="">
-                                        &nbsp;Students&nbsp;
-                                    </Tab>
-                                    <Tab value="Instructors" className="">
-                                        &nbsp;Instructors&nbsp;
-                                    </Tab>
-                                </Button>
-                            </TabsHeader>
-                        </Tabs>
-                        <div className="w-full md:w-72">
-                            <Input label="Search" icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
-                        </div>
-                    </div>
+
                 </CardHeader>
 
                 <CardBody className="overflow-scroll px-0">
@@ -194,7 +167,7 @@ const SelectedClass = () => {
 
 
                                             <Button
-                                                onClick={() => { deleteClassHandller(auth?._id, myClass._id) }}
+                                                onClick={() => { deleteClassHandller(auth?.email, myClass._id) }}
                                                 variant="gradient"
                                                 size="sm"
                                                 className="from-red-900 py-3"

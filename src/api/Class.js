@@ -97,3 +97,27 @@ export const deleteClass = async id => {
     const result = await response.json()
     return result
 }
+
+
+// select class for student
+export const selectClass = async (userEmail, classId) => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/selectClass/${classId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userEmail })
+    });
+
+    const data = await response.json();
+    return data;
+};
+
+// Delete a class from selected class
+export const deleteSelectedClass = async (userEmail, classId) => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/deleteSelectedClass/${userEmail}/${classId}`, {
+        method: 'DELETE',
+    })
+    const result = await response.json()
+    return result
+}

@@ -3,13 +3,14 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
 import axios from "axios";
-import { selectClass } from "../../../api/User";
 import { toast } from "react-toastify";
+import { selectClass } from "../../../api/Class";
+import Loader from "../../Loader";
 
 const SingleClass = ({ singleClass }) => {
+    const [loading, setLoading] = useState(false)
     const { user } = useContext(AuthContext);
     const [auth, setAuth] = useState(null);
-
     useEffect(() => {
         const fetchData = async (email) => {
             try {
@@ -27,18 +28,22 @@ const SingleClass = ({ singleClass }) => {
 
 
 
-    const selectClassHandller = (userId, classId) => {
-        selectClass(userId, classId).then(data => {
-            if (data.modifiedCount > 0) {
+    const selectClassHandller = (userEmail, classId) => {
+        setLoading(true)
+        selectClass(userEmail, classId).then(data => {
+            if (data.insertedId) {
                 toast.success("Class added successfully");
+                setLoading(false)
             }
             toast.warning(data.message);
+            setLoading(false)
         })
-            .catch((error) => { toast.success(error); })
+            .catch((error) => { toast.success(error); setLoading(false) })
     }
 
     return (
         <div>
+            {loading && <Loader />}
             <div className={`md:flex justify-between gap-20 gap-3 shadow-md hover:shadow-2xl hover:scale-102 duration-300 px-8 py-7 rounded overflow-hidden ${singleClass.seats == 0 ? "bg-red-200" : "bg-gray-100"}`}>
                 <div className="w-full">
                     <img
@@ -66,8 +71,15 @@ const SingleClass = ({ singleClass }) => {
                     </p>
                 </div>
 
-
-                {singleClass.seats === 0 ? (
+                <div className="flex md:flex-col justify-between items-center gap-2 w-full">
+                    <span>
+                        <Button onClick={() => selectClassHandller(auth?.email, singleClass?._id)} className="btn bg-purple-700 w-full">
+                            Select class
+                        </Button>
+                    </span>
+                    <span><Button className="btn bg-purple-700 w-full">Enroll now</Button></span>
+                </div>
+                {/* {singleClass.seats === 0 ? (
                     <div className="flex md:flex-col justify-between items-center gap-2 w-full">
                         <span>
                             <Button disabled className="btn bg-purple-700 w-full">
@@ -106,13 +118,13 @@ const SingleClass = ({ singleClass }) => {
                 ) : (
                     <div className="flex md:flex-col justify-between items-center gap-2 w-full">
                         <span>
-                            <Button onClick={() => selectClassHandller(auth._id, singleClass._id)} className="btn bg-purple-700 w-full">
+                            <Button onClick={() => selectClassHandller(auth.email, singleClass._id)} className="btn bg-purple-700 w-full">
                                 Select class
                             </Button>
                         </span>
                         <span><Button className="btn bg-purple-700 w-full">Enroll now</Button></span>
                     </div>
-                )}
+                )} */}
 
             </div >
         </div >

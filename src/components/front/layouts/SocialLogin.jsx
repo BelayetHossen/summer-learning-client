@@ -23,11 +23,13 @@ const SocialLogin = () => {
                     phone: "",
                     gender: "",
                     address: "",
-                    selectedClass: []
                 }
                 addUser(userData)
                     .then(data => {
-                        toast.warning(data.message);
+                        if (data.message !== "user already exists") {
+                            toast.warning(data.message);
+                        }
+
                     })
                     .catch(err => console.log(err))
                 navigate(from, { replace: true });
