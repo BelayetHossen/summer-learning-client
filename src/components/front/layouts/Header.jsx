@@ -45,7 +45,7 @@ const Header = () => {
                 color="blue-gray"
                 className="p-1 font-normal"
             >
-                <Link to={'/classes'}>All classes</Link>
+                <Link to={'/classes'}>Classes</Link>
             </Typography>
             <Typography
                 as="li"
@@ -55,16 +55,7 @@ const Header = () => {
             >
                 <Link to={'/instructors'}>Instructors</Link>
             </Typography>
-            <Typography
-                as="li"
-                variant="small"
-                color="blue-gray"
-                className="p-1 font-normal"
-            >
-                <a href="#" className="flex items-center">
-                    Docs
-                </a>
-            </Typography>
+
         </ul>
     );
     const handleLogout = () => {

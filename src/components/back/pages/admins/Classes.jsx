@@ -1,16 +1,10 @@
 
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
-import { UserPlusIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     CardHeader,
-    Input,
     Typography,
     Button,
     CardBody,
-    Tabs,
-    TabsHeader,
-    Tab,
     Menu,
     MenuHandler,
     MenuList,
@@ -25,6 +19,7 @@ import { FaEdit, FaTrash } from "react-icons/fa";
 import { deleteClass, updateClassApproved, updateClassDenied, updateClassPending } from "../../../../api/Class";
 import Swal from 'sweetalert2'
 import { useState } from "react";
+import { Helmet } from "react-helmet";
 
 
 const TABLE_HEAD = ["SL", "Class name", "Instructor", "Available seats", "Status", "Action"];
@@ -125,7 +120,7 @@ const Classes = () => {
         <>
             {isLoading && <Loader />}
             {spinning && <Loader />}
-
+            <Helmet><title>Manage class | Summer learning language</title></Helmet>
             <Card className="h-full w-full">
                 <CardHeader floated={false} shadow={false} className="rounded-none">
                     <div className="mb-8 flex items-center justify-between gap-6">
@@ -137,42 +132,9 @@ const Classes = () => {
                                 See information about all classes
                             </Typography>
                         </div>
-                        <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                            <Link to={'/dashboard/instructor/addClass'}>
-                                <Button
-                                    variant="gradient"
-                                    size="sm"
-                                    className="from-purple-600 flex items-center gap-3"
-                                >
-                                    <UserPlusIcon strokeWidth={2} className="h-4 w-4" /><span>Add new class</span>
-                                </Button>
-                            </Link>
-                        </div>
+
                     </div>
-                    <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-                        <Tabs value="all" className="w-full md:w-max">
-                            <TabsHeader className="rounded">
-                                <Button
-                                    variant="gradient"
-                                    size="sm"
-                                    className="from-purple-600 flex items-center"
-                                >
-                                    <Tab value="All" className="">
-                                        &nbsp;All&nbsp;
-                                    </Tab>
-                                    <Tab value="Students" className="">
-                                        &nbsp;Students&nbsp;
-                                    </Tab>
-                                    <Tab value="Instructors" className="">
-                                        &nbsp;Instructors&nbsp;
-                                    </Tab>
-                                </Button>
-                            </TabsHeader>
-                        </Tabs>
-                        <div className="w-full md:w-72">
-                            <Input label="Search" icon={<MagnifyingGlassIcon className="h-5 w-5" />} />
-                        </div>
-                    </div>
+
                 </CardHeader>
 
                 <CardBody className="overflow-scroll px-0">

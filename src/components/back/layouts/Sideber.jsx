@@ -72,7 +72,7 @@ const Sidebar = () => {
 
             {/* Sidebar */}
             <div
-                className={`z-[99] md:fixed flex flex-col justify-between overflow-x-hidden bg-purple-100 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${isActive && '-translate-x-full'
+                className={`z-[20] md:fixed flex flex-col justify-between overflow-x-hidden bg-purple-100 w-64 space-y-6 px-2 py-4 absolute inset-y-0 left-0 transform ${isActive && '-translate-x-full'
                     }  md:translate-x-0  transition duration-200 ease-in-out`}
             >
                 <div>
@@ -107,16 +107,7 @@ const Sidebar = () => {
                                 <RxDashboard />
                                 <span className='mx-4 font-medium'>Dashboard</span>
                             </NavLink>
-                            <NavLink
-                                to='/dashboard/users'
-                                className={({ isActive }) =>
-                                    `flex items-center px-4 py-2 mt-2  transition-colors duration-300 transform  hover:bg-gray-100   hover:text-gray-900 ${isActive ? 'bg-purple-300' : 'text-gray-600'
-                                    }`
-                                }
-                            >
-                                <FaUserFriends />
-                                <span className='mx-4 font-medium'>Manage users</span>
-                            </NavLink>
+
 
                             {/* Admin menus */}
                             {auth?.role == "Admin" && <>
@@ -189,6 +180,16 @@ const Sidebar = () => {
                                 >
                                     <BsBookmarkHeart />
                                     <span className='mx-4 font-medium'>Enrolled Classes</span>
+                                </NavLink>
+                                <NavLink
+                                    to='/dashboard/payment/history'
+                                    className={({ isActive }) =>
+                                        `flex items-center px-4 py-2 mt-2  transition-colors duration-300 transform  hover:bg-gray-100   hover:text-gray-900 ${isActive ? 'bg-purple-300' : 'text-gray-600'
+                                        }`
+                                    }
+                                >
+                                    <BsBookmarkHeart />
+                                    <span className='mx-4 font-medium'>Payment history</span>
                                 </NavLink>
 
                             </>}

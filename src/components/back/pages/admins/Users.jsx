@@ -1,5 +1,4 @@
 
-import { UserPlusIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     CardHeader,
@@ -14,12 +13,12 @@ import {
     MenuItem,
 } from "@material-tailwind/react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import { updateRoleAdmin, updateRoleInstructor, updateRoleStudent } from "../../../../api/User";
 import Loader from "../../../Loader";
 import { toast } from "react-toastify";
 import { useQuery } from '@tanstack/react-query'
 import axios from "axios";
+import { Helmet } from "react-helmet";
 
 
 const TABLE_HEAD = ["SL", "Name", "Role", "Status", "Action"];
@@ -69,6 +68,7 @@ const Users = () => {
 
     return (
         <>
+            <Helmet><title>Manage users | Summer learning language</title></Helmet>
             {isLoading && <Loader />}
             {spinning && <Loader />}
             <Card className="h-full w-full">
@@ -81,17 +81,6 @@ const Users = () => {
                             <Typography color="gray" className="mt-1 font-normal">
                                 See information about all users
                             </Typography>
-                        </div>
-                        <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                            <Link to={'/'}>
-                                <Button
-                                    variant="gradient"
-                                    size="sm"
-                                    className="from-purple-600 flex items-center gap-3"
-                                >
-                                    <UserPlusIcon strokeWidth={2} className="h-4 w-4" /><span>Add member</span>
-                                </Button>
-                            </Link>
                         </div>
                     </div>
 

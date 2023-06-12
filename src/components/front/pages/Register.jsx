@@ -7,6 +7,7 @@ import { useContext, useState } from "react";
 import { AuthContext } from "../../../providers/AuthProvider";
 import { addUser } from "../../../api/User";
 import Loader from "../../Loader";
+import { Helmet } from "react-helmet";
 
 
 const Register = () => {
@@ -85,6 +86,7 @@ const Register = () => {
     };
     return (
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden py-4 bg-purple-600">
+            <Helmet><title>Register | Summer learning language</title></Helmet>
             <div className="w-full p-6 m-auto bg-white rounded-md shadow-2xl lg:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-purple-700 uppercase">
                     Sign up

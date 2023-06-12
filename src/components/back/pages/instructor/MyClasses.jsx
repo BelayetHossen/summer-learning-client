@@ -1,5 +1,4 @@
 
-import { UserPlusIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     CardHeader,
@@ -17,6 +16,7 @@ import { AuthContext } from "../../../../providers/AuthProvider";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { deleteClass } from "../../../../api/Class";
 import Swal from 'sweetalert2'
+import { Helmet } from "react-helmet";
 
 
 const TABLE_HEAD = ["SL", "Class name", "Price", "Available seats", "Total enrolled", "Status", "Action"];
@@ -68,7 +68,7 @@ const MyClasses = () => {
         <>
             {isLoading && <Loader />}
             {spinning && <Loader />}
-
+            <Helmet><title>My class | Summer learning language</title></Helmet>
             <Card className="h-full w-full">
                 <CardHeader floated={false} shadow={false} className="rounded-none">
                     <div className="mb-8 flex items-center justify-between gap-6">
@@ -87,7 +87,7 @@ const MyClasses = () => {
                                     size="sm"
                                     className="from-purple-600 flex items-center gap-3"
                                 >
-                                    <UserPlusIcon strokeWidth={2} className="h-4 w-4" /><span>Add new class</span>
+                                    <span>Add new class</span>
                                 </Button>
                             </Link>
                         </div>

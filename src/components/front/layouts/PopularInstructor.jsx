@@ -25,7 +25,7 @@ const PopularInstructor = () => {
 
                             return (
                                 <>
-                                    <Link to={`/instructor/classes/${instructor?.email}`}>
+                                    <Link to={`/instructor/${instructor?.email}`}>
                                         <div key={instructor._id} className="mb-6 lg:mb-0 hover:scale-105 duration-500">
                                             <div
                                                 className="block rounded-lg bg-purple-100 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">

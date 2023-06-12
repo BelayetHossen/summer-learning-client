@@ -1,6 +1,6 @@
 import { Button } from "@material-tailwind/react";
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../providers/AuthProvider";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -11,6 +11,7 @@ const SingleClass = ({ singleClass }) => {
     const [loading, setLoading] = useState(false)
     const { user } = useContext(AuthContext);
     const [auth, setAuth] = useState(null);
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchData = async (email) => {
             try {
@@ -30,16 +31,6 @@ const SingleClass = ({ singleClass }) => {
 
     const selectClassHandller = (userEmail, classId) => {
         setLoading(true)
-        if (auth?.email == "Admin") {
-            toast.warning("Admin can't select any course!");
-            setLoading(false)
-            return;
-        }
-        if (auth?.email == "Instructor") {
-            toast.warning("Instructor can't select any course!");
-            setLoading(false)
-            return;
-        }
         selectClass(userEmail, classId).then(data => {
             if (data.insertedId) {
                 toast.success("Class added successfully");
@@ -49,6 +40,12 @@ const SingleClass = ({ singleClass }) => {
             setLoading(false)
         })
             .catch((error) => { toast.success(error); setLoading(false) })
+    }
+    const nullUser = () => {
+        setLoading(true)
+        toast.warning("You have to login first..");
+        navigate("/login", { replace: true });
+        setLoading(false)
     }
 
     return (
@@ -71,7 +68,7 @@ const SingleClass = ({ singleClass }) => {
                         </h2>
                     </Link>
                     <p className="text-sm text-gray-600">
-                        Instructor name: <span className="font-semibold capitalize text-gray-600">{singleClass?.name}</span>
+                        Instructor name: <span className="font-semibold capitalize text-gray-600">{singleClass?.instructor_name}</span>
                     </p>
                     <p className={`text-sm ${singleClass.seats == 0 ? "text-blue-600" : "text-gray-600"}`}>
                         Available seats: <span className="font-semibold capitalize text-gray-600">{singleClass?.seats}</span>
@@ -93,58 +90,37 @@ const SingleClass = ({ singleClass }) => {
 
                         </Button>
                     </Link>
-                    <span>
-                        <Button onClick={() => selectClassHandller(auth?.email, singleClass?._id)} className="btn bg-purple-700 w-full">
-                            Select class
-                        </Button>
-                    </span>
+                    {
+                        auth?.role == "Admin" && <span>
+                            <Button disabled className="btn bg-purple-700 w-full">
+                                Select class
+                            </Button>
+                        </span>
+                    }
+                    {
+                        auth?.role == "Instructor" && <span>
+                            <Button disabled className="btn bg-purple-700 w-full">
+                                Select class
+                            </Button>
+                        </span>
+                    }
+                    {
+                        auth?.role == "Student" && <span>
+                            <Button onClick={() => selectClassHandller(auth?.email, singleClass?._id)} className="btn bg-purple-700 w-full">
+                                Select class
+                            </Button>
+                        </span>
+                    }
+                    {
+                        user == null && <span>
+                            <Button onClick={() => nullUser()} className="btn bg-purple-700 w-full">
+                                Select class
+                            </Button>
+                        </span>
+                    }
+
                 </div>
-                {/* {singleClass.seats === 0 ? (
-                    <div className="flex md:flex-col justify-between items-center gap-2 w-full">
-                        <span>
-                            <Button disabled className="btn bg-purple-700 w-full">
-                                Select class
-                            </Button>
-                        </span>
-                        <span><Button disabled className="btn bg-purple-700 w-full">Enroll now</Button></span>
-                    </div>
-                ) : auth?.selectedClass?.includes(singleClass._id) ? (
-                    <div className="flex md:flex-col justify-between items-center gap-2 w-full">
-                        <span>
-                            <Button disabled className="btn bg-purple-700 w-full">
-                                Select class
-                            </Button>
-                        </span>
-                        <span><Button disabled className="btn bg-purple-700 w-full">Enroll now</Button></span>
-                    </div>
-                ) : auth?.role === "Instructor" ? (
-                    <div className="flex md:flex-col justify-between items-center gap-2 w-full">
-                        <span>
-                            <Button disabled className="btn bg-purple-700 w-full">
-                                Select class
-                            </Button>
-                        </span>
-                        <span><Button disabled className="btn bg-purple-700 w-full">Enroll now</Button></span>
-                    </div>
-                ) : auth?.role === "Admin" ? (
-                    <div className="flex md:flex-col justify-between items-center gap-2 w-full">
-                        <span>
-                            <Button disabled className="btn bg-purple-700 w-full">
-                                Select class
-                            </Button>
-                        </span>
-                        <span><Button disabled className="btn bg-purple-700 w-full">Enroll now</Button></span>
-                    </div>
-                ) : (
-                    <div className="flex md:flex-col justify-between items-center gap-2 w-full">
-                        <span>
-                            <Button onClick={() => selectClassHandller(auth.email, singleClass._id)} className="btn bg-purple-700 w-full">
-                                Select class
-                            </Button>
-                        </span>
-                        <span><Button className="btn bg-purple-700 w-full">Enroll now</Button></span>
-                    </div>
-                )} */}
+
 
             </div >
         </div >

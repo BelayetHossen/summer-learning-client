@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import PageTitle from "../layouts/PageTitle";
 import { Button } from "@material-tailwind/react";
 import { useContext, useEffect, useState } from "react";
@@ -7,6 +7,7 @@ import axios from "axios";
 import { selectClass } from "../../../api/Class";
 import { toast } from "react-toastify";
 import Loader from "../../Loader";
+import { Helmet } from "react-helmet";
 
 
 const SinClassPage = () => {
@@ -14,7 +15,7 @@ const SinClassPage = () => {
     const [loading, setLoading] = useState(false)
     const { user } = useContext(AuthContext);
     const [auth, setAuth] = useState(null);
-    console.log(auth);
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchData = async (email) => {
             try {
@@ -31,16 +32,6 @@ const SinClassPage = () => {
     }, [user]);
     const selectClassHandller = (userEmail, classId) => {
         setLoading(true)
-        if (auth?.email == "Admin") {
-            toast.warning("Admin can't select any course!");
-            setLoading(false)
-            return;
-        }
-        if (auth?.email == "Instructor") {
-            toast.warning("Instructor can't select any course!");
-            setLoading(false)
-            return;
-        }
         selectClass(userEmail, classId).then(data => {
             if (data.insertedId) {
                 toast.success("Class added successfully");
@@ -51,8 +42,15 @@ const SinClassPage = () => {
         })
             .catch((error) => { toast.success(error); setLoading(false) })
     }
+    const nullUser = () => {
+        setLoading(true)
+        toast.warning("You have to login first..");
+        navigate("/login", { replace: true });
+        setLoading(false)
+    }
     return (
         <div className="bg-purple-100 pb-8">
+            <Helmet><title>Class | Summer learning language</title></Helmet>
             {loading && <Loader />}
             <PageTitle title={myClass.name} text="" img="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&crop=focalpoint&fp-y=.8&w=2830&h=1500&q=80&blend=111827&sat=-100&exp=15&blend-mode=multiply"></PageTitle>
             <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -68,7 +66,7 @@ const SinClassPage = () => {
                             </div>
 
                             <div className="w-full shrink-0 grow-0 basis-auto lg:w-7/12">
-                                <div className="h-full rounded-lg bg-purple-600 p-6 text-center text-white lg:pl-12 lg:text-left">
+                                <div className="h-full rounded-lg bg-purple-300 p-6 text-center text-white lg:pl-12 lg:text-left">
                                     <div className="lg:pl-12">
                                         <h2 className="mb-8 text-3xl font-bold">{myClass.name}</h2>
                                         <h2 className="mb-8 text-xl font-bold">{myClass.instructor_name}</h2>
@@ -79,12 +77,36 @@ const SinClassPage = () => {
                                         <p>{myClass.details}</p>
                                     </div>
                                     <div className="flex justify-between items-center gap-2 w-full mt-4">
-                                        <span>
-                                            <Button onClick={() => selectClassHandller(auth?.email, myClass?._id)} className="btn bg-blue-700 w-full">
-                                                Select class
-                                            </Button>
-                                        </span>
-                                        <span><Button className="btn bg-blue-700 w-full">Enroll now</Button></span>
+
+                                        {
+                                            auth?.role == "Admin" && <span>
+                                                <Button disabled className="btn bg-purple-700 w-full">
+                                                    Select class
+                                                </Button>
+                                            </span>
+                                        }
+                                        {
+                                            auth?.role == "Instructor" && <span>
+                                                <Button disabled className="btn bg-purple-700 w-full">
+                                                    Select class
+                                                </Button>
+                                            </span>
+                                        }
+                                        {
+                                            auth?.role == "Student" && <span>
+                                                <Button onClick={() => selectClassHandller(auth?.email, myClass?._id)} className="btn bg-purple-700 w-full">
+                                                    Select class
+                                                </Button>
+                                            </span>
+                                        }
+                                        {
+                                            user == null && <span>
+                                                <Button onClick={() => nullUser()} className="btn bg-purple-700 w-full">
+                                                    Select class
+                                                </Button>
+                                            </span>
+                                        }
+
                                     </div>
                                 </div>
                             </div>

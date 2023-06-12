@@ -1,10 +1,12 @@
 import { Button } from "@material-tailwind/react";
+import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
 
 
 const Page404 = () => {
     return (
         <div>
+            <Helmet><title>404 page | Summer learning language</title></Helmet>
             <section className="bg-white dark:bg-gray-900 mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                 <div className="container flex items-center min-h-screen px-6 py-12 mx-auto">
                     <div>

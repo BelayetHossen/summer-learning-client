@@ -7,6 +7,7 @@ import { AuthContext } from "../../../../providers/AuthProvider";
 import { toast } from "react-toastify";
 import { addClass } from "../../../../api/Class";
 import Loader from "../../../Loader";
+import { Helmet } from "react-helmet";
 
 
 const Addclass = () => {
@@ -66,6 +67,7 @@ const Addclass = () => {
 
     return (
         <div>
+            <Helmet><title>Add class | Summer learning language</title></Helmet>
             {spinning && <Loader />}
             <Card className="h-full w-full p-8">
 

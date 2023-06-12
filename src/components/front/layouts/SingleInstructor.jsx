@@ -28,9 +28,6 @@ const SingleInstructor = ({ instuctor }) => {
                     <Typography color="gray" className="font-medium" textGradient>
                         <span className="bold text-[#424242]">Email:</span> {instuctor.email}
                     </Typography>
-                    <Typography color="gray" className="font-medium" textGradient>
-                        <span className="bold text-[#424242]">Name of Classes:</span> {instuctor.email}
-                    </Typography>
                 </CardBody>
                 <CardFooter className="pt-2">
                     <div className="flex justify-center gap-7">
@@ -68,8 +65,18 @@ const SingleInstructor = ({ instuctor }) => {
                             size="sm"
                             className="from-purple-600 mt-6 w-full"
                         >
-                            <span>See all classes</span>
-                        </Button></Link>
+                            <span>See classes</span>
+                        </Button>
+                    </Link>
+                    <Link to={`/instructor/${instuctor?.email}`}>
+                        <Button
+                            variant="gradient"
+                            size="sm"
+                            className="from-purple-600 mt-6 w-full"
+                        >
+                            <span>View profile</span>
+                        </Button>
+                    </Link>
                 </CardFooter>
             </Card>
         </div>

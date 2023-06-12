@@ -20,7 +20,7 @@ import { Helmet } from "react-helmet";
 
 const TABLE_HEAD = ["SL", "Class name", "Price", "Available seats", "Total enrolled", "Status", "Action"];
 
-const MyClasses = () => {
+const PaymentHistrory = () => {
     // const [spinning, setSpinning] = useState(false);
     // const { user } = useContext(AuthContext)
 
@@ -40,16 +40,16 @@ const MyClasses = () => {
         <>
             {/* {isLoading && <Loader />}
             {spinning && <Loader />} */}
-            <Helmet><title>Enrolled class | Summer learning language</title></Helmet>
+            <Helmet><title>Payment history | Summer learning language</title></Helmet>
             <Card className="h-full w-full">
                 <CardHeader floated={false} shadow={false} className="rounded-none">
                     <div className="mb-8 flex items-center justify-between gap-6">
                         <div>
                             <Typography variant="h5" color="blue-gray">
-                                My enrolled classes
+                                All the payment history
                             </Typography>
                             <Typography color="gray" className="mt-1 font-normal">
-                                See information about all enrollrd classes
+                                See information about all payment
                             </Typography>
                         </div>
 
@@ -159,6 +159,4 @@ const MyClasses = () => {
     );
 }
 
-
-
-export default MyClasses;
+export default PaymentHistrory;

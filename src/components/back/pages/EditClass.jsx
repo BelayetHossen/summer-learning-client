@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { AuthContext } from "../../../providers/AuthProvider";
 import { updateClass } from "../../../api/Class";
 import Loader from "../../Loader";
+import { Helmet } from "react-helmet";
 
 
 const EditClass = () => {
@@ -89,6 +90,7 @@ const EditClass = () => {
 
     return (
         <div>
+            <Helmet><title>Edit class | Summer learning language</title></Helmet>
             {spinning && <Loader />}
             <Card className="h-full w-full p-8">
 

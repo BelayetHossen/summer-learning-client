@@ -22,6 +22,13 @@ export const getAllUsers = async () => {
     return data
 }
 
+// Get single instructor
+export const singleInstractor = async (email) => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/instructor/${email}`)
+    const data = await response.json()
+    return data
+}
+
 
 // user role update to admin
 export const updateRoleAdmin = async (id, role) => {

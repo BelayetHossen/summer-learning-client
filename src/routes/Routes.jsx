@@ -19,6 +19,10 @@ import InstructorClassess from '../components/front/pages/InstructorClassess'
 import { instuctorClasssFront, singleClass } from '../api/Class'
 import SinClassPage from '../components/front/pages/SinClassPage'
 import Page404 from '../components/front/pages/Page404'
+import Instructor from '../components/front/pages/Instructor'
+import { singleInstractor } from '../api/User'
+import PaymentHistrory from '../components/back/pages/student/PaymentHistrory'
+import Payment from '../components/back/pages/student/Payment'
 
 
 export const router = createBrowserRouter([
@@ -55,6 +59,11 @@ export const router = createBrowserRouter([
                 path: '/class/:id',
                 element: <SinClassPage />,
                 loader: ({ params }) => singleClass(params.id),
+            },
+            {
+                path: '/instructor/:email',
+                element: <Instructor />,
+                loader: ({ params }) => singleInstractor(params.email),
             },
 
         ]
@@ -99,6 +108,15 @@ export const router = createBrowserRouter([
             {
                 path: '/dashboard/student/selectedClass',
                 element: <PrivateRoute><SelectedClass /></PrivateRoute>,
+            },
+            {
+                path: '/dashboard/payment/:id',
+                element: <PrivateRoute><Payment /></PrivateRoute>,
+                loader: ({ params }) => singleClass(params.id),
+            },
+            {
+                path: '/dashboard/payment/history',
+                element: <PrivateRoute><PaymentHistrory /></PrivateRoute>,
             },
             {
                 path: '/dashboard/student/enrolledClass',

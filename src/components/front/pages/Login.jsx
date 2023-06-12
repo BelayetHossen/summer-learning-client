@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { toast } from "react-toastify";
 import Loader from "../../Loader";
+import { Helmet } from "react-helmet";
 
 
 const Login = () => {
@@ -41,6 +42,7 @@ const Login = () => {
 
     return (
         <div className="relative flex flex-col justify-center min-h-screen overflow-hidden py-4 bg-purple-600">
+            <Helmet><title>Login | Summer learning language</title></Helmet>
             <div className="w-full p-6 m-auto bg-white rounded-md shadow-2xl lg:max-w-xl">
                 <h1 className="text-3xl font-semibold text-center text-purple-700 uppercase">
                     Sign in

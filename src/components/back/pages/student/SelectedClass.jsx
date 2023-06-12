@@ -1,5 +1,4 @@
 
-import { UserPlusIcon } from "@heroicons/react/24/solid";
 import {
     Card,
     CardHeader,
@@ -8,7 +7,6 @@ import {
     CardBody,
 } from "@material-tailwind/react";
 import { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Loader from "../../../Loader";
 import { toast } from "react-toastify";
 import { useQuery } from '@tanstack/react-query'
@@ -17,6 +15,8 @@ import { AuthContext } from "../../../../providers/AuthProvider";
 import { FaTrash } from "react-icons/fa";
 import Swal from 'sweetalert2'
 import { deleteSelectedClass } from "../../../../api/Class";
+import { Helmet } from "react-helmet";
+import { Link } from "react-router-dom";
 
 
 const TABLE_HEAD = ["SL", "Class name", "Price", "Payment", "Action"];
@@ -83,7 +83,7 @@ const SelectedClass = () => {
         <>
             {isLoading && <Loader />}
             {spinning && <Loader />}
-
+            <Helmet><title>Selected class | Summer learning language</title></Helmet>
             <Card className="h-full w-full">
                 <CardHeader floated={false} shadow={false} className="rounded-none">
                     <div className="mb-8 flex items-center justify-between gap-6">
@@ -95,17 +95,7 @@ const SelectedClass = () => {
                                 See information about my selected classes
                             </Typography>
                         </div>
-                        <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                            <Link to={'/dashboard/instructor/addClass'}>
-                                <Button
-                                    variant="gradient"
-                                    size="sm"
-                                    className="from-purple-600 flex items-center gap-3"
-                                >
-                                    <UserPlusIcon strokeWidth={2} className="h-4 w-4" /><span>Add new class</span>
-                                </Button>
-                            </Link>
-                        </div>
+
                     </div>
 
                 </CardHeader>
@@ -153,19 +143,20 @@ const SelectedClass = () => {
                                         </td>
 
                                         <td className="p-4 border-b border-blue-gray-50">
-                                            <Button
+                                            <Link to={`/dashboard/payment/${myClass._id}`}>
+                                                <Button
 
-                                                variant="gradient"
-                                                size="sm"
-                                                className="from-purple-700 py-3"
-                                                type="submit"
-                                            >
-                                                Pay now
-                                            </Button>
+                                                    variant="gradient"
+                                                    size="sm"
+                                                    className="from-purple-700 py-3"
+                                                    type="submit"
+                                                >
+                                                    Pay now
+                                                </Button>
+                                            </Link>
+
                                         </td>
                                         <td className="p-4 w-50 border-b border-blue-gray-50 flex justify-around items-center gap-1">
-
-
                                             <Button
                                                 onClick={() => { deleteClassHandller(auth?.email, myClass._id) }}
                                                 variant="gradient"
