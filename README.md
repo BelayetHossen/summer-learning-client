@@ -41,5 +41,5 @@ Welcome to the Summer language learning repository! This repository contains the
 - Mongo DB
 - Express
 
-## Technologies Used
+## Live Link
 Live Link: https://summer-learning.web.app/
